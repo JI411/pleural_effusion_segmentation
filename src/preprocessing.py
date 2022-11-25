@@ -33,5 +33,3 @@ def load_mask(nii: tp.Union[Path, str]) -> np.ndarray:
     mask = nib.load(nii)
     mask = mask.get_fdata()
     return mask.transpose(2, 0, 1)
-
-
