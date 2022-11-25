@@ -3,7 +3,7 @@ from zipfile import ZipFile
 
 import wandb
 
-from const import INPUT_DIR
+import const
 
 
 def unzip(archives_dir: Path) -> None:
@@ -18,8 +18,8 @@ def unzip(archives_dir: Path) -> None:
 def load_data() -> None:
     api = wandb.Api()
     artifact = api.artifact('lekomtsev/pleural_effusion_segmentation/subset.zip:latest')
-    artifact.download(root=INPUT_DIR)
-    unzip(INPUT_DIR)
+    artifact.download(root=const.INPUT_DIR)
+    unzip(const.INPUT_DIR)
 
 
 if __name__ == '__main__':
