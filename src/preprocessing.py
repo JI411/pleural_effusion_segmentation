@@ -16,7 +16,7 @@ def load_dicom(directory: tp.Union[Path, str]) -> np.ndarray:
     :return: 3d image
     """
     reader = sitk.ImageSeriesReader()
-    dicom_names = reader.GetGDCMSeriesFileNames(directory)
+    dicom_names = reader.GetGDCMSeriesFileNames(str(directory))
     reader.SetFileNames(dicom_names)
     image_itk = reader.Execute()
 
@@ -33,3 +33,16 @@ def load_mask(nii: tp.Union[Path, str]) -> np.ndarray:
     mask = nib.load(nii)
     mask = mask.get_fdata()
     return mask.transpose(2, 0, 1)
+
+def load_dicom_dataset(directory: tp.Union[Path, str]) -> tp.Generator[np.ndarray, None, None]:
+    """
+    Load all dicom images from dir, can be used to read all dataset
+    :param directory: path to directory contains directories with .dcm files
+    :return: 3d images
+    """
+    for dicom_dir in Path(directory).glob('*'):
+        if not dicom_dir.is_dir():
+            continue
+        if list(dicom_dir.glob('*.dcm')):
+            yield load_dicom(directory=dicom_dir)
+        yield from load_dicom_dataset(dicom_dir)
