@@ -1,3 +1,7 @@
+"""
+Preprocess dataset before training
+"""
+
 import typing as tp
 from pathlib import Path
 
