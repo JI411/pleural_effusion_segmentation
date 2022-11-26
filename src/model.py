@@ -4,7 +4,7 @@ Models for segmentation
 import torch
 import segmentation_models_pytorch as smp
 
-class UnetSMPWrapper(torch.nn.Module):
+class UnetSMPWrapper(torch.nn.Module):  # pylint: disable=too-few-public-methods
     """ Wrapper for smp.Unet """
 
     def __init__(self, in_channels: int, encoder_name: str = 'resnet34') -> None:
