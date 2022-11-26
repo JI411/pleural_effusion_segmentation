@@ -3,5 +3,5 @@ torchvision==0.10.1
 numpy==1.23.5
 SimpleITK==2.2.0
 nibabel==4.0.2
-
+segmentation_models_pytorch==0.3.0
 wandb==0.13.5
