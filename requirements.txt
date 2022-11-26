@@ -1,6 +1,5 @@
 torch==1.9.1
 torchvision==0.10.1
-git+https://github.com/facebookresearch/pytorch3d.git@v0.7.1
 numpy==1.23.5
 SimpleITK==2.2.0
 nibabel==4.0.2
