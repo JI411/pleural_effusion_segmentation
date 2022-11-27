@@ -1,8 +1,9 @@
 """
 Models for segmentation
 """
-import torch
 import segmentation_models_pytorch as smp
+import torch
+
 
 class UnetSMPWrapper(torch.nn.Module):  # pylint: disable=too-few-public-methods
     """ Wrapper for smp.Unet """
