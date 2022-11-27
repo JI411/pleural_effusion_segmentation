@@ -1,3 +1,7 @@
+"""
+Read data from disk
+"""
+
 import typing as tp
 from pathlib import Path
 

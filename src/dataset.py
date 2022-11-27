@@ -3,7 +3,6 @@ Dataset and Dataloader classes
 """
 
 import typing as tp
-from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -11,11 +10,11 @@ import torch
 from torch.utils.data import Dataset, DataLoader, random_split
 
 import const
-import utils
+from src import read_data
 
 
-@dataclass(frozen=True)
-class Batch:
+class Batch(tp.TypedDict):
+    """ Contains batch from dataset """
     image: np.ndarray
     mask: np.ndarray
 
@@ -39,7 +38,7 @@ class PleuralEffusionDataset(Dataset):
         """
         self.image_dir_paths: tp.List[Path] = sorted([p for p in images_dir.glob('*') if p.is_dir()])
         self.masks_dir_paths: tp.List[Path] = sorted([p for p in masks_dir.glob('*') if p.is_dir()])
-        self.num_channels: int = num_channels or max(x.shape[0] for x in utils.load_dicom_recursive(images_dir))
+        self.num_channels: int = num_channels or max(x.shape[0] for x in read_data.load_dicom_recursive(images_dir))
         self._check_paths()
 
     def _check_paths(self) -> None:
@@ -57,9 +56,8 @@ class PleuralEffusionDataset(Dataset):
 
     def __getitem__(self, idx: int) -> Batch:
         """ Get lung image and mask for it """
-
-        image = list(utils.load_dicom_recursive(self.image_dir_paths[idx]))[0]
-        mask = utils.load_mask_from_dir(self.masks_dir_paths[idx])
+        image = list(read_data.load_dicom_recursive(self.image_dir_paths[idx]))[0]
+        mask = read_data.load_mask_from_dir(self.masks_dir_paths[idx])
 
         if (shape := image.shape)[0] < self.num_channels:
             empty_layers_shape = (self.num_channels - shape[0], *shape[1:3])
@@ -74,7 +72,7 @@ class PleuralEffusionDataset(Dataset):
             image = image[:self.num_channels]
             mask = mask[:self.num_channels]
 
-        return Batch(image=image.float(), mask=mask.float())
+        return Batch(image=image, mask=mask)
 
 
 def get_standard_dataloaders(
