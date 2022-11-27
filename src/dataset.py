@@ -3,67 +3,21 @@ Dataset and Dataloader classes
 """
 
 import typing as tp
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
-import nibabel as nib
-import SimpleITK as sitk
 import torch
 from torch.utils.data import Dataset, DataLoader, random_split
 
 import const
+import utils
 
 
-def load_dicom(directory: tp.Union[Path, str]) -> np.ndarray:
-    """
-    Read image from dir with files dicom format, have same dimensions with mask from load_mask
-    :param directory: path to directory contains .dcm files
-    :return: 3d image
-    """
-    reader = sitk.ImageSeriesReader()
-    dicom_names = reader.GetGDCMSeriesFileNames(str(directory))
-    reader.SetFileNames(dicom_names)
-    image_itk = reader.Execute()
-
-    image_zyx = sitk.GetArrayFromImage(image_itk)
-    return image_zyx.astype(np.int16)
-
-def load_dicom_recursive(directory: tp.Union[Path, str]) -> tp.Generator[np.ndarray, None, None]:
-    """
-    Load all dicom images from dir, can be used to read all dataset
-    :param directory: path to directory contains directories with .dcm files
-    :return: 3d images
-    """
-    for dicom_dir in Path(directory).glob('*'):
-        if not dicom_dir.is_dir():
-            continue
-        if list(dicom_dir.glob('*.dcm')):
-            yield load_dicom(directory=dicom_dir)
-        yield from load_dicom_recursive(dicom_dir)
-
-
-def load_mask(nii: tp.Union[Path, str]) -> np.ndarray:
-    """
-    Read mask in .nii format, have same dimensions with image from load_dicom
-    :param nii: path to .nii.gz file
-    :return: 3d mask
-    """
-    mask = nib.load(nii)
-    mask = mask.get_fdata()
-    return mask.transpose(2, 0, 1)
-
-def load_mask_from_dir(nii: tp.Union[Path, str]) -> np.ndarray:
-    """
-    Read mask in .nii format, have same dimensions with image from load_dicom
-    :param nii: path to .nii.gz file or dir with the only one .nii file
-    :return: 3d mask
-    """
-    if nii.is_dir():
-        nii_files = list(nii.rglob('*.nii.gz'))
-        if len(nii_files) != 1:
-            raise FileNotFoundError(f'Wrong path to mask file: {nii}')
-        nii = nii_files[0]
-    return load_mask(nii=nii)
+@dataclass(frozen=True)
+class Batch:
+    image: np.ndarray
+    mask: np.ndarray
 
 class PleuralEffusionDataset(Dataset):
     """Pleural Effusion Dataset"""
@@ -85,7 +39,7 @@ class PleuralEffusionDataset(Dataset):
         """
         self.image_dir_paths: tp.List[Path] = sorted([p for p in images_dir.glob('*') if p.is_dir()])
         self.masks_dir_paths: tp.List[Path] = sorted([p for p in masks_dir.glob('*') if p.is_dir()])
-        self.num_channels: int = num_channels or max(x.shape[0] for x in load_dicom_recursive(images_dir))
+        self.num_channels: int = num_channels or max(x.shape[0] for x in utils.load_dicom_recursive(images_dir))
         self._check_paths()
 
     def _check_paths(self) -> None:
@@ -101,11 +55,11 @@ class PleuralEffusionDataset(Dataset):
         """ Len of dataset """
         return len(self.image_dir_paths)
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx: int) -> Batch:
         """ Get lung image and mask for it """
 
-        image = list(load_dicom_recursive(self.image_dir_paths[idx]))[0]
-        mask = load_mask_from_dir(self.masks_dir_paths[idx])
+        image = list(utils.load_dicom_recursive(self.image_dir_paths[idx]))[0]
+        mask = utils.load_mask_from_dir(self.masks_dir_paths[idx])
 
         if (shape := image.shape)[0] < self.num_channels:
             empty_layers_shape = (self.num_channels - shape[0], *shape[1:3])
@@ -120,7 +74,7 @@ class PleuralEffusionDataset(Dataset):
             image = image[:self.num_channels]
             mask = mask[:self.num_channels]
 
-        return {'image': image, 'mask': mask}
+        return Batch(image=image.float(), mask=mask.float())
 
 
 def get_standard_dataloaders(
