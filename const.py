@@ -1,7 +1,7 @@
 """
 Main constants: paths, params and etc
 """
-
+import os
 import typing as tp
 
 from pathlib import Path
@@ -14,4 +14,7 @@ IMAGES_DIR: tp.Final[Path] = INPUT_DIR / 'subset' / 'subset' / 'subset_img' / 's
 MASKS_DIR: tp.Final[Path] = INPUT_DIR / 'subset' / 'subset' / 'subset_masks' / 'subset_masks'
 OUTPUT_DIR: tp.Final[Path] = ROOT_DIR / 'output'
 
-SEED: tp.Final[int] = 411
+SEED: tp.Final[int] = int(os.environ.get('SEED', 411))
+DEFAULT_BATCH_SIZE: tp.Final[int] = int(os.environ.get('DEFAULT_BATCH_SIZE', 2))
+DEFAULT_NUM_WORKERS: tp.Final[int] = int(os.environ.get('DEFAULT_NUM_WORKERS', 4))
+DEFAULT_VALID_FRACTION: tp.Final[float] = float(os.environ.get('DEFAULT_VALID_FRACTION', 0.2))

@@ -34,7 +34,6 @@ class BinaryDiceLoss(_Loss):
         mask = mask.view(batch_size, 1, -1)
         mask_pred = raw_logits.view(batch_size, 1, -1)
         mask_pred = logsigmoid(mask_pred).exp()
-        # mask_pred = torch.sigmoid(mask_pred)
 
         intersection = torch.sum(mask_pred * mask, dim=dims)
         cardinality = torch.sum(mask_pred + mask, dim=dims)

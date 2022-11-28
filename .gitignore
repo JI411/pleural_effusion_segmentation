@@ -15,6 +15,8 @@
 *.gz
 *.nii
 *.dcm
+*.html
+*.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
