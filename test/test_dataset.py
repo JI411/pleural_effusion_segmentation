@@ -30,8 +30,6 @@ def test_types():
         f'Set of train batch keys {keys} != set of train batch keys {set(valid_batch.keys())}'
     )
 
-    print(set(dataset.Batch.__annotations__.keys()))
-    print(set(dataset.Batch.__annotations__.keys()).symmetric_difference(keys))
     assert not set(dataset.Batch.__annotations__.keys()).symmetric_difference(keys), (
         f'Set of batch keys {keys} != set of dataset.Batch keys'
     )
@@ -58,11 +56,8 @@ def test_dataloader_split():
     with pytest.raises(ValueError):
         dataset.get_standard_dataloaders(split_lengths=(1, 0))
 
-    dataset_len = sum(len(loader) for loader in iter(dataset.get_standard_dataloaders()))
-    print(dataset_len)
-    with pytest.raises(ValueError) as err:
-        dataset.get_standard_dataloaders(split_lengths=(dataset_len, 0))
-        print(err)
-    with pytest.raises(ValueError) as err:
-        dataset.get_standard_dataloaders(split_lengths=(0, dataset_len))
-        print(err)
+    dataset_len = sum(len(loader) for loader in iter(dataset.get_standard_dataloaders(batch_size=1)))
+    with pytest.raises(ValueError):
+        dataset.get_standard_dataloaders(split_lengths=(dataset_len + 1, 0))
+    with pytest.raises(ValueError):
+        dataset.get_standard_dataloaders(split_lengths=(0, dataset_len + 1))
