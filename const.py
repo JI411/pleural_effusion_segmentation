@@ -14,7 +14,7 @@ IMAGES_DIR: tp.Final[Path] = INPUT_DIR / 'subset' / 'subset' / 'subset_img' / 's
 MASKS_DIR: tp.Final[Path] = INPUT_DIR / 'subset' / 'subset' / 'subset_masks' / 'subset_masks'
 OUTPUT_DIR: tp.Final[Path] = ROOT_DIR / 'output'
 
-SEED: tp.Final[int] = os.environ.get('SEED', 411)
-DEFAULT_BATCH_SIZE: tp.Final[int] = os.environ.get('DEFAULT_BATCH_SIZE', 2)
-DEFAULT_NUM_WORKERS: tp.Final[int] = os.environ.get('DEFAULT_NUM_WORKERS', 4)
-DEFAULT_VALID_FRACTION: tp.Final[float] = os.environ.get('DEFAULT_VALID_FRACTION', 0.2)
+SEED: tp.Final[int] = int(os.environ.get('SEED', 411))
+DEFAULT_BATCH_SIZE: tp.Final[int] = int(os.environ.get('DEFAULT_BATCH_SIZE', 2))
+DEFAULT_NUM_WORKERS: tp.Final[int] = int(os.environ.get('DEFAULT_NUM_WORKERS', 4))
+DEFAULT_VALID_FRACTION: tp.Final[float] = float(os.environ.get('DEFAULT_VALID_FRACTION', 0.2))
