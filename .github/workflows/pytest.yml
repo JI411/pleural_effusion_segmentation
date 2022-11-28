@@ -22,12 +22,9 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py') --max-line-length=120  --disable=import-error --disable=no-member --disable=too-few-public-methods
-    - shell: bash
-      name: Run pytest
-      env:
-        WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
-        run: |
-          wandb --anonymously
-          python download_dataset.py
-          pytest
+    - name: Run pytest
+      run: |
+        wandb --anonymously
+        python download_dataset.py
+        pytest
 
