@@ -18,8 +18,13 @@ class Batch(tp.TypedDict):
     image: np.ndarray
     mask: np.ndarray
 
+class Loaders(tp.NamedTuple):
+    """ Contains split dataloaders """
+    train: DataLoader
+    valid: DataLoader
+
 class PleuralEffusionDataset(Dataset):
-    """Pleural Effusion Dataset"""
+    """ Pleural Effusion Dataset """
 
     fill_value_mask = 0
     fill_value_image = -1024
@@ -76,18 +81,27 @@ class PleuralEffusionDataset(Dataset):
 
 
 def get_standard_dataloaders(
-        batch_size: int = 2, num_workers: int = 2, split_lengths: tp.Sequence[int] = (7, 3)
-) -> tp.Tuple[DataLoader, DataLoader]:
+        batch_size: int = const.DEFAULT_BATCH_SIZE,
+        num_workers: int = const.DEFAULT_NUM_WORKERS,
+        split_lengths: tp.Optional[tp.Tuple[int, int]] = None,
+        **kwargs
+) -> Loaders:
     """
     Get dataloaders to current dataset
     :param batch_size: how many samples per batch to load
     :param num_workers: how many subprocesses to use for data loading. 0 => no multiprocessing
-    :param split_lengths: lengths of splits to be produced
+    :param split_lengths: lengths of splits to be produced, first for train, second for valid
+    :param kwargs: params for PleuralEffusionDataset
     :return: (train_dataloader, valid_dataloader)
     """
+    if split_lengths is None:
+        full_data_len = len(PleuralEffusionDataset(**kwargs))
+        num_valid_samples = int(const.DEFAULT_VALID_FRACTION * full_data_len)
+        split_lengths = (full_data_len - num_valid_samples, num_valid_samples)
+
     train, valid = random_split(
-        PleuralEffusionDataset(), split_lengths, generator=torch.Generator().manual_seed(const.SEED)
+        PleuralEffusionDataset(**kwargs), split_lengths, generator=torch.Generator().manual_seed(const.SEED)
     )
     train = DataLoader(train, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     valid = DataLoader(valid, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    return train, valid
+    return Loaders(train=train, valid=valid)
