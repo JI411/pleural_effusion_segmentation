@@ -1,4 +1,4 @@
-name: Pylint
+name: Actions
 
 on: [push]
 
@@ -24,4 +24,5 @@ jobs:
         pylint $(git ls-files '*.py') --max-line-length=120  --disable=import-error --disable=no-member --disable=too-few-public-methods
     - name: Run pytest
       run: |
+        python download_dataset.py
         pytest
