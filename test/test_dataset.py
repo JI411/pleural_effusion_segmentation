@@ -59,6 +59,7 @@ def test_dataloader_split():
         dataset.get_standard_dataloaders(split_lengths=(1, 0))
 
     dataset_len = sum(len(loader) for loader in iter(dataset.get_standard_dataloaders()))
+    print(dataset_len)
     with pytest.raises(ValueError):
         dataset.get_standard_dataloaders(split_lengths=(dataset_len, 0))
     with pytest.raises(ValueError):
