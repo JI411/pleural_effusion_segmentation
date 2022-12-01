@@ -1,0 +1,3 @@
+"""
+Validate config with pydantic
+"""

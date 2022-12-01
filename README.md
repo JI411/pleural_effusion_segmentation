@@ -10,12 +10,10 @@ git clone https://github.com/JI411/pleural_effusion_segmentation.git
 cd pleural_effusion_segmentation
 pip install -r requirements.txt
 python download_dataset.py
-python train.py
+python run.py config/best.yml
 ```
 
-You can specify train.py run with argument, 
-for example `python train.py --batch 4` set batch size equal to 4.   
-Run `python train.py --help` to see all.
+You can specify run with your own config, see examples [here](https://github.com/JI411/pleural_effusion_segmentation/tree/main/config)
 
 ## Contributing
 

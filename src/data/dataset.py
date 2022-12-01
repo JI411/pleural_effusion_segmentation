@@ -10,7 +10,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader, random_split
 
 import const
-from src import read_data
+from src.data import read_data
 
 
 class Batch(tp.TypedDict):
@@ -31,8 +31,8 @@ class PleuralEffusionDataset(Dataset):
 
     def __init__(
             self,
-            images_dir: tp.Union[Path, str] = const.IMAGES_DIR,
-            masks_dir: tp.Union[Path, str] = const.MASKS_DIR,
+            images_dir: const.PathType = const.IMAGES_DIR,
+            masks_dir: const.PathType = const.MASKS_DIR,
             num_channels: tp.Optional[int] = None
     ) -> None:
         """
@@ -41,8 +41,8 @@ class PleuralEffusionDataset(Dataset):
         :param masks_dir: dir with dirs with .nii.gz masks; default const.MASKS_DIR
         :param num_channels: num channels in one sample, set for all images; default use max channels in dataset
         """
-        self.image_dir_paths: tp.List[Path] = sorted([p for p in images_dir.glob('*') if p.is_dir()])
-        self.masks_dir_paths: tp.List[Path] = sorted([p for p in masks_dir.glob('*') if p.is_dir()])
+        self.image_dir_paths: tp.List[Path] = sorted([p for p in Path(images_dir).glob('*') if p.is_dir()])
+        self.masks_dir_paths: tp.List[Path] = sorted([p for p in Path(masks_dir).glob('*') if p.is_dir()])
         self.num_channels: int = num_channels or max(x.shape[0] for x in read_data.load_dicom_recursive(images_dir))
         self._check_paths()
 
