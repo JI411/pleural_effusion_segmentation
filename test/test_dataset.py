@@ -7,14 +7,14 @@ import typing as tp
 import pytest
 from torch.utils.data import DataLoader
 
-from src import dataset
+from src.data import dataset
 
 
 def _get_batch(dataloader: DataLoader) -> dataset.Batch:
     return next(iter(dataloader))
 
 
-def test_types():
+def test__types():
     """
     Assert typing.
 
@@ -35,7 +35,7 @@ def test_types():
     )
 
 
-def test_shapes():
+def test__shapes():
     """
     Assert all images and masks have the same shapes.
     Unfortunately, images can not have different shapes because batching, but mask shape may differ from image shape.
@@ -51,7 +51,7 @@ def test_shapes():
             )
 
 
-def test_dataloader_split():
+def test__dataloader_split():
     """ Raise error then have incorrect split for train/val """
     with pytest.raises(ValueError):
         dataset.get_standard_dataloaders(split_lengths=(1, 0))

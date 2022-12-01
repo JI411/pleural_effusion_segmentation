@@ -26,12 +26,12 @@ class TestDiceLoss:
 
     loss = dice.BinaryDiceLoss()
 
-    def test_best_predict(self):
+    def test__best_predict(self):
         """ If (pred == mask) loss must be equal to zero """
         score = self.loss(raw_logits=inverse_sigmoid(self.batch_mask), mask=self.batch_mask)
         assert torch.isclose(score, torch.tensor(0, dtype=torch.float)), score
 
-    def test_worst_predict(self):
+    def test__worst_predict(self):
         """ If (pred != mask) in every point loss must be equal to one """
         inverse_mask = self.batch_mask.clone().bool()
         inverse_mask = (~inverse_mask).float()
