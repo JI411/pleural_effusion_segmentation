@@ -7,57 +7,27 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader, random_split
+from torch.utils.data import DataLoader, random_split
 
 import const
 from src.data import read_data
+from src.data.base import PleuralEffusionDataset, Batch, Loaders
 
 
-class Batch(tp.TypedDict):
-    """ Contains batch from dataset """
-    image: np.ndarray
-    mask: np.ndarray
-
-class Loaders(tp.NamedTuple):
-    """ Contains split dataloaders """
-    train: DataLoader
-    valid: DataLoader
-
-class PleuralEffusionDataset(Dataset):
+class PleuralEffusionDataset2D(PleuralEffusionDataset):
     """ Pleural Effusion Dataset """
 
-    fill_value_mask = 0
-    fill_value_image = -1024
-
-    def __init__(
-            self,
-            images_dir: const.PathType = const.IMAGES_DIR,
-            masks_dir: const.PathType = const.MASKS_DIR,
-            num_channels: tp.Optional[int] = None
-    ) -> None:
+    def __init__(self, images_dir: const.PathType = const.IMAGES_DIR, masks_dir: const.PathType = const.MASKS_DIR,
+                 num_channels: tp.Optional[int] = None) -> None:
         """
         Create dataset class
         :param images_dir: dir with dirs with .dcm images; default const.IMAGES_DIR
         :param masks_dir: dir with dirs with .nii.gz masks; default const.MASKS_DIR
         :param num_channels: num channels in one sample, set for all images; default use max channels in dataset
         """
-        self.image_dir_paths: tp.List[Path] = sorted([p for p in Path(images_dir).glob('*') if p.is_dir()])
-        self.masks_dir_paths: tp.List[Path] = sorted([p for p in Path(masks_dir).glob('*') if p.is_dir()])
+
+        super().__init__(images_dir, masks_dir)
         self.num_channels: int = num_channels or max(x.shape[0] for x in read_data.load_dicom_recursive(images_dir))
-        self._check_paths()
-
-    def _check_paths(self) -> None:
-        """
-        Check paths to images and masks
-        :raise ValueError: if names in image_sir_names is different from names in masks_dir_paths
-        :return:
-        """
-        if [p.name for p in self.image_dir_paths] != [p.name for p in self.masks_dir_paths]:
-            raise ValueError('Dataset object names does not match!')
-
-    def __len__(self) -> int:
-        """ Len of dataset """
-        return len(self.image_dir_paths)
 
     def __getitem__(self, idx: int) -> Batch:
         """ Get lung image and mask for it """
@@ -77,11 +47,20 @@ class PleuralEffusionDataset(Dataset):
             image = image[:self.num_channels]
             mask = mask[:self.num_channels]
 
-        return Batch(image=image, mask=mask)
+        return Batch(image=image.astype('float32'), mask=mask.astype(int))
+
+class PleuralEffusionDataset3D(PleuralEffusionDataset):
+    """ Pleural Effusion Dataset """
+
+    def __getitem__(self, idx: int) -> Batch:
+        """ Get lung image and mask for it """
+        image = list(read_data.load_dicom_recursive(self.image_dir_paths[idx]))[0]
+        mask = read_data.load_mask_from_dir(self.masks_dir_paths[idx])
+        return Batch(image=image[None].astype('float32'), mask=mask[None].astype(int))
 
 
 def get_standard_dataloaders(
-        batch_size: int = const.DEFAULT_BATCH_SIZE,
+        batch_size: int,
         num_workers: int = const.DEFAULT_NUM_WORKERS,
         split_lengths: tp.Optional[tp.Tuple[int, int]] = None,
         **kwargs
@@ -95,12 +74,12 @@ def get_standard_dataloaders(
     :return: (train_dataloader, valid_dataloader)
     """
     if split_lengths is None:
-        full_data_len = len(PleuralEffusionDataset(**kwargs))
+        full_data_len = len(PleuralEffusionDataset3D(**kwargs))
         num_valid_samples = int(const.DEFAULT_VALID_FRACTION * full_data_len)
         split_lengths = (full_data_len - num_valid_samples, num_valid_samples)
 
     train, valid = random_split(
-        PleuralEffusionDataset(**kwargs), split_lengths, generator=torch.Generator().manual_seed(const.SEED)
+        PleuralEffusionDataset3D(**kwargs), split_lengths, generator=torch.Generator().manual_seed(const.SEED)
     )
     train = DataLoader(train, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     valid = DataLoader(valid, batch_size=batch_size, shuffle=False, num_workers=num_workers)
