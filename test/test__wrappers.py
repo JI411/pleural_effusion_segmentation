@@ -15,7 +15,7 @@ def _easy_dataloader(shape: tp.Sequence[int]) -> DataLoader:
 
 @pytest.mark.parametrize(
     "input_shape,num_epoch,net,max_allowed_loss", [
-        ((8, 1, 16, 32, 32), 10, wrappers.Unet3DWrapper(in_channels=1, out_channels=1), 0.06),
+        ((8, 1, 16, 32, 32), 10, wrappers.Unet3DWrapper(), 0.06),
     ]
 )
 def test__wrapper(input_shape: tp.Sequence[int], num_epoch: int, net: BaseModel, max_allowed_loss: float):

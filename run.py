@@ -14,11 +14,11 @@ from src.train import PleuralSegmentationModule
 def main(args):
     seed_everything(const.SEED, workers=True)
 
-    model = PleuralSegmentationModule(model=wrappers.Unet3DWrapper(in_channels=1, out_channels=1), batch_size=1)
+    model = PleuralSegmentationModule(model=wrappers.Unet3DWrapper(), batch_size=1)
     trainer = Trainer(auto_scale_batch_size='power')
     batch_size = trainer.tune(model)['scale_batch_size']
 
-    model = PleuralSegmentationModule(model=wrappers.Unet3DWrapper(in_channels=1, out_channels=1), batch_size=batch_size)
+    model = PleuralSegmentationModule(model=wrappers.Unet3DWrapper(), batch_size=batch_size)
     trainer = Trainer.from_argparse_args(args)
     trainer.fit(model)
 
