@@ -17,9 +17,16 @@ class Unet2DWrapper(BaseModel):
 
 class Unet3DWrapper(BaseModel):
 
-    def __init__(self, in_channels: int, out_channels: int):
-        super().__init__(in_channels=in_channels, out_channels=out_channels)
-        self.model = UNet3D(in_channels=in_channels, out_channels=out_channels, final_sigmoid=False)
+    def __init__(self):
+        super().__init__(in_channels=1)
+        self.model = UNet3D(in_channels=1, out_channels=1, final_sigmoid=False)
+
+
+class ResidualUNet3DWrapper(BaseModel):
+
+    def __init__(self):
+        super().__init__(in_channels=1)
+        self.model = ResidualUNet3D(in_channels=1, out_channels=1, final_sigmoid=False)
 
 
 class UnetSMPWrapper(BaseModel):
