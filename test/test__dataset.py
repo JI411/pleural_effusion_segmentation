@@ -34,30 +34,13 @@ def test__types():
         f'Set of batch keys {keys} != set of dataset.Batch keys'
     )
 
-
-def test__shapes():
-    """
-    Assert all images and masks have the same shapes.
-    Unfortunately, images can not have different shapes because batching, but mask shape may differ from image shape.
-    """
-    dataloaders = dataset.get_standard_dataloaders()
-    only_one_shape: tp.Tuple[int, ...] = _get_batch(dataloaders.train)['image'].shape
-    for loader in iter(dataloaders):
-        for batch in loader:
-            assert batch['image'].shape == batch['mask'].shape == only_one_shape, (
-                f"Shape does not match. For the image from first batch is {only_one_shape}. "
-                f"For one of image is {batch['image'].shape}, mask {batch['mask'].shape}. "
-                f"In loader {loader}."
-            )
-
-
 def test__dataloader_split():
     """ Raise error then have incorrect split for train/val """
     with pytest.raises(ValueError):
-        dataset.get_standard_dataloaders(split_lengths=(1, 0))
+        dataset.get_standard_dataloaders(batch_size=1, split_lengths=(1, 0))
 
     dataset_len = sum(len(loader) for loader in iter(dataset.get_standard_dataloaders(batch_size=1)))
     with pytest.raises(ValueError):
-        dataset.get_standard_dataloaders(split_lengths=(dataset_len + 1, 0))
+        dataset.get_standard_dataloaders(batch_size=1, split_lengths=(dataset_len + 1, 0))
     with pytest.raises(ValueError):
-        dataset.get_standard_dataloaders(split_lengths=(0, dataset_len + 1))
+        dataset.get_standard_dataloaders(batch_size=1, split_lengths=(0, dataset_len + 1))
