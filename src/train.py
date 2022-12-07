@@ -6,7 +6,7 @@ import torch
 from torch.utils.data import DataLoader
 
 from src.data.dataset import Batch
-from src.data.preprocessing import get_standard_dataloaders
+from src.data.batching import get_standard_dataloaders
 from src.dice import BinaryDiceLoss
 from src.model.wrappers import BaseModel
 

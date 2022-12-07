@@ -7,7 +7,7 @@ import typing as tp
 import numpy as np
 
 import const
-from src.data import read_data
+from src.data import read_data, preprocessing
 from src.data.base import PleuralEffusionDataset, Batch
 
 
@@ -54,4 +54,5 @@ class PleuralEffusionDataset3D(PleuralEffusionDataset):
         """ Get lung image and mask for it """
         image = list(read_data.load_dicom_recursive(self.image_dir_paths[idx]))[0]
         mask = read_data.load_mask_from_dir(self.masks_dir_paths[idx])
-        return Batch(image=image[None].astype('float32'), mask=mask[None].astype(int))
+        image = preprocessing.normalize(image)
+        return Batch(image=image.astype('float32'), mask=mask.astype(int))
