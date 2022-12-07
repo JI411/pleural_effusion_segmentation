@@ -1,14 +1,14 @@
 """
 Main training script
 """
+import pytorch_lightning as pl
+import torch
 from torch.utils.data import DataLoader
 
-from src.data.dataset import get_standard_dataloaders, Batch
+from src.data.dataset import Batch
+from src.data.preprocessing import get_standard_dataloaders
 from src.dice import BinaryDiceLoss
 from src.model.wrappers import BaseModel
-
-import torch
-import pytorch_lightning as pl
 
 
 class PleuralSegmentationModule(pl.LightningModule):

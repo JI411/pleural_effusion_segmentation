@@ -2,9 +2,10 @@
 Models for segmentation
 """
 
-from src.model.base import BaseModel
-from pytorch3dunet.unet3d.model import UNet2D, UNet3D, ResidualUNet3D
 import segmentation_models_pytorch as smp
+from pytorch3dunet.unet3d.model import UNet2D, UNet3D, ResidualUNet3D
+
+from src.model.base import BaseModel
 
 
 class Unet2DWrapper(BaseModel):

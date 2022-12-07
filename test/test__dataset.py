@@ -7,6 +7,7 @@ import typing as tp
 import pytest
 from torch.utils.data import DataLoader
 
+from src.data import preprocessing
 from src.data import dataset
 
 
@@ -16,7 +17,7 @@ def _get_batch(dataloader: DataLoader) -> dataset.Batch:
 
 @pytest.fixture()
 def standard_loaders():
-    return dataset.get_standard_dataloaders(batch_size=2, num_workers=2)
+    return preprocessing.get_standard_dataloaders(batch_size=2, num_workers=2)
 
 def test__smoke(standard_loaders):
     for loader in standard_loaders:
@@ -46,10 +47,10 @@ def test__types(standard_loaders):
 def test__dataloader_split():
     """ Raise error then have incorrect split for train/val """
     with pytest.raises(ValueError):
-        dataset.get_standard_dataloaders(batch_size=1, split_lengths=(1, 0))
+        src.data.preprocessing.get_standard_dataloaders(batch_size=1, split_lengths=(1, 0))
 
-    dataset_len = sum(len(loader) for loader in iter(dataset.get_standard_dataloaders(batch_size=1)))
+    dataset_len = sum(len(loader) for loader in iter(src.data.preprocessing.get_standard_dataloaders(batch_size=1)))
     with pytest.raises(ValueError):
-        dataset.get_standard_dataloaders(batch_size=1, split_lengths=(dataset_len + 1, 0))
+        src.data.preprocessing.get_standard_dataloaders(batch_size=1, split_lengths=(dataset_len + 1, 0))
     with pytest.raises(ValueError):
-        dataset.get_standard_dataloaders(batch_size=1, split_lengths=(0, dataset_len + 1))
+        src.data.preprocessing.get_standard_dataloaders(batch_size=1, split_lengths=(0, dataset_len + 1))
