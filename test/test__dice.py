@@ -17,7 +17,7 @@ class TestDiceLoss:
     """ Contains test for dice loss values for different answers """
 
     batch_mask = torch.rand(
-        2, 100, 512, 512,
+        2, 1, 10, 36, 36,
         device='cpu',
         dtype=torch.float,
         generator=torch.Generator().manual_seed(const.SEED),

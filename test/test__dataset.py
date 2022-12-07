@@ -14,14 +14,23 @@ def _get_batch(dataloader: DataLoader) -> dataset.Batch:
     return next(iter(dataloader))
 
 
-def test__types():
+@pytest.fixture()
+def standard_loaders():
+    return dataset.get_standard_dataloaders(batch_size=2, num_workers=2)
+
+def test__smoke(standard_loaders):
+    for loader in standard_loaders:
+        for _ in loader:
+            break
+
+
+def test__types(standard_loaders):
     """
     Assert typing.
 
     Can not check directly instance of dataset.Batch because
     "TypeError: TypedDict does not support instance and class checks"
     """
-    standard_loaders = dataset.get_standard_dataloaders(batch_size=1, num_workers=1)
     assert isinstance(standard_loaders, dataset.Loaders)
 
     train_batch = _get_batch(standard_loaders.train)

@@ -39,6 +39,3 @@ def test__wrapper(input_shape: tp.Sequence[int], num_epoch: int, net: BaseModel,
             outputs = net(inputs)
             loss.append(criterion(outputs, labels).item())
     assert np.mean(loss) < max_allowed_loss, f'loss must be lower than {max_allowed_loss}, but have {loss=}'
-
-
-
