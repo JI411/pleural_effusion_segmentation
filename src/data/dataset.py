@@ -3,11 +3,13 @@ Dataset and Dataloader classes
 """
 
 import typing as tp
+from functools import partial
 from pathlib import Path
 
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, random_split
+from torch.utils.data._utils.collate import collate, default_collate_fn_map
 
 import const
 from src.data import read_data
@@ -58,6 +60,17 @@ class PleuralEffusionDataset3D(PleuralEffusionDataset):
         mask = read_data.load_mask_from_dir(self.masks_dir_paths[idx])
         return Batch(image=image[None].astype('float32'), mask=mask[None].astype(int))
 
+def collate_nested_tensor_fn(batch, *, collate_fn_map=None):
+    # elem = batch[0]
+    # out = None
+    # if torch.utils.data.get_worker_info() is not None:
+    #     numel = sum(x.numel() for x in batch)
+    #     storage = elem._typed_storage()._new_shared(numel, device=elem.device)
+        # out = elem.new(storage).resize_(len(batch), *list(elem.size()))
+    # batch = [batch[0][:].view(-1), batch[0][:].view(-1)]
+    batch = torch.nested.nested_tensor(batch, dtype=torch.float32)
+    # batch.size()
+    return batch
 
 def get_standard_dataloaders(
         batch_size: int,
@@ -81,6 +94,8 @@ def get_standard_dataloaders(
     train, valid = random_split(
         PleuralEffusionDataset3D(**kwargs), split_lengths, generator=torch.Generator().manual_seed(const.SEED)
     )
-    train = DataLoader(train, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-    valid = DataLoader(valid, batch_size=batch_size, shuffle=False, num_workers=num_workers)
+    nested_collate_fn_map = default_collate_fn_map
+    nested_collate_fn_map.update({torch.Tensor: collate_nested_tensor_fn})
+    train = DataLoader(train, batch_size=batch_size, shuffle=True, num_workers=num_workers, collate_fn=partial(collate, collate_fn_map=nested_collate_fn_map))
+    valid = DataLoader(valid, batch_size=batch_size, shuffle=False, num_workers=num_workers, collate_fn=partial(collate, collate_fn_map=nested_collate_fn_map))
     return Loaders(train=train, valid=valid)
