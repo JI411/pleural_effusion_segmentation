@@ -7,7 +7,6 @@ import numpy as np
 from torch.utils.data import DataLoader, Dataset
 
 import const
-from src.data import read_data
 
 
 class Batch(tp.TypedDict):
