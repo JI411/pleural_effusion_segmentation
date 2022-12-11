@@ -5,7 +5,6 @@ Run main training script
 from argparse import ArgumentParser
 
 from pytorch_lightning import Trainer, seed_everything
-from pytorch_lightning.utilities.argparse import add_argparse_args
 
 import const
 from src.model import wrappers
@@ -13,6 +12,7 @@ from src.train import PleuralSegmentationModule
 
 
 def main(args):
+    """Run training pipline."""
     seed_everything(const.SEED, workers=True)
 
     batch_size = args.batch

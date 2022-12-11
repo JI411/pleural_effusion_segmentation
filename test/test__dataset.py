@@ -11,14 +11,17 @@ from src.data import dataset
 
 
 def _get_batch(dataloader: DataLoader) -> dataset.Batch:
+    """ Get first batch from dataloader """
     return next(iter(dataloader))
 
 
-@pytest.fixture()
-def standard_loaders():
+@pytest.fixture(name='standard_loaders')
+def fixture_standard_loaders():
+    """ Get standard loaders with batch size=2 and num_workers=2 """
     return batching.get_standard_dataloaders(batch_size=2, num_workers=2)
 
 def test__smoke(standard_loaders):
+    """ Check that we can get batch from dataloaders """
     for loader in standard_loaders:
         for _ in loader:
             break
@@ -56,11 +59,10 @@ def test__dataloader_split():
 
 
 def test__normalization(standard_loaders):
+    """ Check that normalization works """
     zero, one = torch.tensor(0.), torch.tensor(1.)
     for loader in standard_loaders:
         for batch in loader:
             image = batch['image']
             assert torch.isclose(image_min := image.min(), zero), f'Min image pixel value {image_min} less than 0'
             assert torch.isclose(image_max := image.max(), one), f'Max image pixel value {image_max} greater than 1'
-
-
