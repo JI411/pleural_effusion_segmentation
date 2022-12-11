@@ -13,6 +13,7 @@ import const
 def unzip(archives_dir: const.PathType) -> None:
     """
     Unzip archives fromm dir recursively
+
     :param archives_dir: dir with one or more archives
     :return:
     """
@@ -29,6 +30,7 @@ def unzip(archives_dir: const.PathType) -> None:
 def load_data(link: str = const.DATASET_LINK) -> None:
     """
     Load dataset from W&B
+
     :return:
     """
     api = wandb.Api()
