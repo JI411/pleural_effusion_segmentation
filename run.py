@@ -5,6 +5,7 @@ Run main training script
 from argparse import ArgumentParser
 
 from pytorch_lightning import Trainer, seed_everything
+from pytorch_lightning.loggers import WandbLogger
 
 import const
 from src.model import wrappers
@@ -22,7 +23,9 @@ def main(args):
         batch_size = trainer.tune(model)['scale_batch_size']
 
     model = PleuralSegmentationModule(model=wrappers.Unet3DWrapper(), batch_size=batch_size)
-    trainer = Trainer.from_argparse_args(args)
+    wandb_logger = WandbLogger(project="pleural_effusion_segmentation", save_dir=const.LOG_DIR)
+    wandb_logger.watch(model)
+    trainer = Trainer.from_argparse_args(args, logger=wandb_logger)
     trainer.fit(model)
 
 

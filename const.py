@@ -9,10 +9,12 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve(strict=True).parent
 
 SRC_DIR: tp.Final[Path] = ROOT_DIR / 'src'
-INPUT_DIR: tp.Final[Path] = ROOT_DIR / 'input'
+DATA_DIR: tp.Final[Path] = ROOT_DIR / 'data'
+INPUT_DIR: tp.Final[Path] = DATA_DIR / 'input'
 IMAGES_DIR: tp.Final[Path] = INPUT_DIR / 'subset' / 'subset' / 'subset_img' / 'subset'
 MASKS_DIR: tp.Final[Path] = INPUT_DIR / 'subset' / 'subset' / 'subset_masks' / 'subset_masks'
-OUTPUT_DIR: tp.Final[Path] = ROOT_DIR / 'output'
+OUTPUT_DIR: tp.Final[Path] = DATA_DIR / 'output'
+LOG_DIR: tp.Final[Path] = OUTPUT_DIR / 'logs'
 
 DATASET_LINK: tp.Final[str] = 'lekomtsev/pleural_effusion_segmentation/subset.zip:latest'
 
