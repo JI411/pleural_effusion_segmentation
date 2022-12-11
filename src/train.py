@@ -25,21 +25,26 @@ class PleuralSegmentationModule(pl.LightningModule):  # pylint: disable=too-many
         self.loaders = get_standard_dataloaders(batch_size=self.batch_size)
 
     def training_step(self, batch: Batch, batch_idx: int) -> float:
+        """ Train model on batch """
         predict = self.model(batch['image'])
         score = self.loss.forward(raw_logits=predict, mask=batch['mask'])
         self.log("train_loss", score)
         return score
 
     def validation_step(self, batch: Batch, batch_idx: int) -> None:
+        """ Validate model on batch """
         predict = self.model(batch['image'])
         score = self.loss.forward(raw_logits=predict, mask=batch['mask'])
         self.log("test_loss", score)
 
     def train_dataloader(self) -> DataLoader:
+        """ Get train dataloader """
         return self.loaders.train
 
     def val_dataloader(self) -> DataLoader:
+        """ Get validation dataloader """
         return self.loaders.valid
 
     def configure_optimizers(self):
+        """ Configure optimizer """
         return torch.optim.AdamW(self.parameters(), lr=1e-3)
