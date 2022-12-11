@@ -14,7 +14,13 @@ from src.data.base import Loaders
 from src.data.dataset import PleuralEffusionDataset3D
 
 
-def collate_padded_tensor_fn(batch, *, collate_fn_map=None):
+def collate_padded_tensor_fn(batch, *, collate_fn_map=None):  # pylint: disable=unused-argument
+    """
+    Collate function for padding tensors to the same size
+    :param batch: list of tensors
+    :param collate_fn_map: map of types to collate functions (unused, but required by signature of collate)
+    :return: padded tensors as a batch
+    """
     batch = torch.nn.utils.rnn.pad_sequence(batch, batch_first=True, padding_value=0.)
     return batch.unsqueeze(1)
 
@@ -26,6 +32,7 @@ def get_standard_dataloaders(
 ) -> Loaders:
     """
     Get dataloaders to current dataset
+
     :param batch_size: how many samples per batch to load
     :param num_workers: how many subprocesses to use for data loading. 0 => no multiprocessing
     :param split_lengths: lengths of splits to be produced, first for train, second for valid

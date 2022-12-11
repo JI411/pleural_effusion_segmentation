@@ -1,3 +1,7 @@
+"""
+Batching and data loading.
+"""
+
 import typing as tp
 from pathlib import Path
 
@@ -22,8 +26,8 @@ class Loaders(tp.NamedTuple):
 class PleuralEffusionDataset(Dataset):
     """ Pleural Effusion Dataset """
 
-    fill_value_mask = 0
-    fill_value_image = -1024
+    fill_value_mask: int = 0
+    fill_value_image: int = -1024
 
     def __init__(
             self,

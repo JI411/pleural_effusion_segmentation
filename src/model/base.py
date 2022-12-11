@@ -1,10 +1,14 @@
+"""
+Base class for all models.
+"""
 import torch
 
 
 class BaseModel(torch.nn.Module):
-    """Base model class for typing and hinting"""
+    """Base model class used in typing and hinting"""
 
     def __init__(self, in_channels: int, **kwargs):
+        """ Create model """
         super().__init__()
         self.in_channels = in_channels
         self.kwargs = kwargs
