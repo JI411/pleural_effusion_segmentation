@@ -31,6 +31,7 @@ class BinaryDiceLoss(_Loss):
         """
         batch_size = mask.size(0)
         dims = (0, 2)
+        mask = mask.bool()
         mask = mask.view(batch_size, 1, -1)
         mask_pred = raw_logits.view(batch_size, 1, -1)
         mask_pred = logsigmoid(mask_pred).exp()

@@ -4,21 +4,21 @@ A repository used to train [pleural effusion](https://en.wikipedia.org/wiki/Pleu
 
 ## Installation
 
-If you want train model, run in terminal code below:
+If you want to train model, run in terminal code below:
 ```
 git clone https://github.com/JI411/pleural_effusion_segmentation.git
 cd pleural_effusion_segmentation
 pip install -r requirements.txt
 python download_dataset.py
-python run.py config/best.yml
+python run.py --accelerator="gpu" --max_epochs=100
 ```
 
-You can specify run with your own config, see examples [here](https://github.com/JI411/pleural_effusion_segmentation/tree/main/config)
+You can specify run with pytorch-lightning params, see examples [here](https://pytorch-lightning.readthedocs.io/en/stable/common/trainer.html#trainer-in-python-scripts)
 
 ## Contributing
 
-Install libraries from `requirements-dev.txt` and run pytest and pylint 
-(disabled checks out can find in [pylint.yml](https://github.com/JI411/pleural_effusion_segmentation/blob/main/.github/workflows/pylint.yml))
+Install libraries from `requirements-dev.txt`, run pytest and pylint 
+(disabled checks can be found in [pylint.yml](https://github.com/JI411/pleural_effusion_segmentation/blob/main/.github/workflows/pylint.yml))
 before push.
 
 
@@ -32,10 +32,17 @@ before push.
 - [x] Unet model from smp
 - [x] Dice loss
 - [x] Pylint & actions
+- [x] Unet3D model from [pytorch-3dunet](https://github.com/wolny/pytorch-3dunet)
 - [ ] Visualisation 
 - [ ] Preprocessing & augmentations  
-- [ ] Train script
-- [ ] Logging
+- [x] Train script
+- [x] Logging
+
+## Next
+- [ ] Create a dataloader with variable-size input with collate_fn
+- [ ] Use [NestedTensors](https://pytorch.org/tutorials/prototype/nestedtensor.html) instead of padding
+- [ ] Add more augmentations
+- [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
 
 ### Tests
   - [x] test_dataset
