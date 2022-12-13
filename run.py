@@ -19,7 +19,7 @@ def main(args):
 
     batch_size = args.batch
     if not batch_size:
-        model = PleuralSegmentationModule(model=wrappers.Unet3DWrapper(), batch_size=1)
+        model = PleuralSegmentationModule(model=wrappers.UnetSMPWrapper(), batch_size=1)
         trainer = Trainer(auto_scale_batch_size='power')
         batch_size = trainer.tune(model)['scale_batch_size']
 
