@@ -26,7 +26,7 @@ def main(args):
     model = PleuralSegmentationModule(model=wrappers.Unet3DWrapper(), batch_size=batch_size)
     wandb_logger = WandbLogger(project="pleural_effusion_segmentation", save_dir=const.LOG_DIR)
     wandb_logger.watch(model)
-    trainer = Trainer.from_argparse_args(args, logger=wandb_logger, profiler="simple", callbacks=[DeviceStatsMonitor()])
+    trainer = Trainer.from_argparse_args(args, logger=wandb_logger, profiler="simple", callbacks=[DeviceStatsMonitor()])  # todo
     trainer.fit(model)
 
 
