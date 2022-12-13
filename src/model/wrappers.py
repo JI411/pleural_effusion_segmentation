@@ -61,5 +61,5 @@ class UnetSMPWrapper(BaseModel):
             pred = self.model(tensor_slice)
             result.append(pred.cpu())
 
-        result = torch.cat(result, dim=1).cuda()
+        result = torch.cat(result, dim=1)
         return result.unsqueeze(1)
