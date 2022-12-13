@@ -14,4 +14,4 @@ class PleuralEffusionDataset3D(PleuralEffusionDataset):
         image = preprocessing.rotate_array(image)
         mask = read_data.load_mask_from_dir(self.masks_dir_paths[idx])
         image = preprocessing.normalize(image)
-        return Batch(image=image.astype('float32')[:10, ...], mask=mask.astype(int)[:10, ...])
+        return Batch(image=image.astype('float32')[:10, ...], mask=mask.astype(int)[:10, ...])  # todo remove [:10, ...]
