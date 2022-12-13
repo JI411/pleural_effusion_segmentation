@@ -59,7 +59,7 @@ class UnetSMPWrapper(BaseModel):
         result = []
         for tensor_slice in torch.moveaxis(image, 2, 0):
             pred = self.model(tensor_slice)
-            result.append(pred.cpu())
+            result.append(pred.clone().cpu())
 
         result = torch.cat(result, dim=1)
         return result.unsqueeze(1)

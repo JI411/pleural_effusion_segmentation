@@ -37,9 +37,10 @@ before push.
 - [ ] Preprocessing & augmentations  
 - [x] Train script
 - [x] Logging
+- [x] Create a dataloader with variable-size input with collate_fn
 
 ## Next
-- [ ] Create a dataloader with variable-size input with collate_fn
+- [ ] Dataset caching
 - [ ] Use [NestedTensors](https://pytorch.org/tutorials/prototype/nestedtensor.html) instead of padding
 - [ ] Add more augmentations
 - [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
