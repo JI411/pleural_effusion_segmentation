@@ -59,10 +59,10 @@ def test__dataloader_split():
 
 
 def test__normalization(standard_loaders):
-    """ Check that normalization works """
-    zero, one = torch.tensor(0.), torch.tensor(1.)
+    """ Check that normalization to [0, 1] works """
+    zero, one, eps = torch.tensor(0.), torch.tensor(1.), 1e-6
     for loader in standard_loaders:
         for batch in loader:
             image = batch['image']
-            assert torch.isclose(image_min := image.min(), zero), f'Min image pixel value {image_min} less than 0'
-            assert torch.isclose(image_max := image.max(), one), f'Max image pixel value {image_max} greater than 1'
+            assert (image_min := image.min()) >= zero - eps, f'Min image pixel value {image_min} less than 0'
+            assert (image_max := image.max()) <= one + eps, f'Max image pixel value {image_max} greater than 1'

@@ -34,7 +34,7 @@ class PleuralSegmentationModule(pl.LightningModule):  # pylint: disable=too-many
     def validation_step(self, batch: Batch, batch_idx: int) -> None:
         """ Validate model on batch """
         predict = self.model(batch['image'])
-        score = self.loss.forward(raw_logits=predict, mask=batch['mask'])
+        score = self.loss.forward(raw_logits=predict, mask=batch['mask']).item()
         self.log("test_loss", score)
 
     def train_dataloader(self) -> DataLoader:
