@@ -23,7 +23,7 @@ class Loaders(tp.NamedTuple):
     valid: DataLoader
 
 
-class PleuralEffusionDataset(Dataset):
+class BaseDataset(Dataset):
     """ Pleural Effusion Dataset """
 
     fill_value_mask: int = 0
