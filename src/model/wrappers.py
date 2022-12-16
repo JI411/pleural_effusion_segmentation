@@ -5,6 +5,7 @@ Models for segmentation
 import torch
 from pytorch3dunet.unet3d.model import UNet2D, UNet3D, ResidualUNet3D
 
+from src.data import preprocessing
 from src.model.base import BaseModel, BaseUnetSMPModel
 
 
@@ -20,6 +21,9 @@ class Unet2DWrapper(BaseModel):
 class Unet3DWrapper(BaseModel):
     """ Wrapper for 3D UNet model """
 
+    train_transforms = preprocessing.crop_3d_mask_and_image_batch
+    valid_transforms = preprocessing.crop_3d_mask_and_image_batch
+
     def __init__(self):
         """ Create 3D UNet model """
         super().__init__(in_channels=1)
@@ -28,6 +32,9 @@ class Unet3DWrapper(BaseModel):
 
 class ResidualUNet3DWrapper(BaseModel):
     """ Wrapper for 3D Residual UNet model """
+
+    train_transforms = preprocessing.crop_3d_mask_and_image_batch
+    valid_transforms = preprocessing.crop_3d_mask_and_image_batch
 
     def __init__(self):
         """ Create 3D Residual UNet model """
@@ -44,6 +51,9 @@ class UnetSMP2DWrapper(BaseUnetSMPModel):
 
 class UnetSMP3DWrapper(BaseUnetSMPModel):
     """ Wrapper for smp.Unet model """
+
+    train_transforms = preprocessing.crop_3d_mask_and_image_batch
+    valid_transforms = preprocessing.crop_3d_mask_and_image_batch
 
     def forward(self, image: torch.Tensor) -> torch.Tensor:
         """

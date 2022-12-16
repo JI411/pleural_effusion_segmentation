@@ -33,14 +33,17 @@ class BaseDataset(Dataset):
             self,
             images_dir: const.PathType = const.IMAGES_DIR,
             masks_dir: const.PathType = const.MASKS_DIR,
+            transforms: tp.Optional[tp.Callable[[Batch], Batch]] = None,
     ) -> None:
         """
         Create dataset class
         :param images_dir: dir with dirs with .dcm images; default const.IMAGES_DIR
         :param masks_dir: dir with dirs with .nii.gz masks; default const.MASKS_DIR
+        :param transforms: transforms for image and mask
         """
         self.image_dir_paths: tp.List[Path] = sorted([p for p in Path(images_dir).glob('*') if p.is_dir()])
         self.masks_dir_paths: tp.List[Path] = sorted([p for p in Path(masks_dir).glob('*') if p.is_dir()])
+        self.transforms = transforms
         self._check_paths()
 
     def _check_paths(self) -> None:

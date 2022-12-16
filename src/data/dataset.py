@@ -43,7 +43,10 @@ class PleuralEffusionDataset2D(BaseDataset):
         mask = self.masks[idx].astype(int)
         # TODO: add channel_idx random sampler, use fraction of 1  # pylint: disable=fixme
         channel_idx = np.random.randint(image.shape[0])
-        return Batch(image=image[channel_idx][None], mask=mask[channel_idx][None])
+        batch = Batch(image=image[channel_idx][None], mask=mask[channel_idx][None])
+        if self.transforms is not None:
+            batch = self.transforms(batch)
+        return batch
 
 class PleuralEffusionDataset3D(BaseDataset):
     """ Pleural Effusion Dataset """
@@ -54,4 +57,7 @@ class PleuralEffusionDataset3D(BaseDataset):
         image = preprocessing.rotate_array(image)
         mask = read_data.load_mask_from_dir(self.masks_dir_paths[idx])
         image = preprocessing.normalize(image)
-        return Batch(image=image.astype('float32')[None], mask=mask.astype(int)[None])
+        batch = Batch(image=image.astype('float32'), mask=mask.astype(int))
+        if self.transforms is not None:
+            batch = self.transforms(batch)
+        return Batch(image=batch['image'].astype('float32')[None], mask=batch['mask'].astype(int)[None])

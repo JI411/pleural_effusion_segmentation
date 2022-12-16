@@ -39,7 +39,9 @@ def get_standard_dataloaders(
         batch_size: int,
         num_workers: int = const.DEFAULT_NUM_WORKERS,
         split_lengths: tp.Optional[tp.Tuple[int, int]] = None,
-        dataset_class: tp.Type[BaseDataset] = dataset.PleuralEffusionDataset2D,
+        dataset_class: tp.Type[BaseDataset] = dataset.PleuralEffusionDataset3D,
+        train_transforms: tp.Optional[tp.Callable] = None,
+        valid_transforms: tp.Optional[tp.Callable] = None,
         **kwargs
 ) -> Loaders:
     """
@@ -49,6 +51,8 @@ def get_standard_dataloaders(
     :param num_workers: how many subprocesses to use for data loading. 0 => no multiprocessing
     :param split_lengths: lengths of splits to be produced, first for train, second for valid
     :param dataset_class: dataset class for create loaders
+    :param train_transforms: transforms for train dataset
+    :param valid_transforms: transforms for valid dataset
     :param kwargs: params for BaseDataset
     :return: (train_dataloader, valid_dataloader)
     """
@@ -60,6 +64,8 @@ def get_standard_dataloaders(
     train, valid = random_split(
         dataset_class(**kwargs), split_lengths, generator=torch.Generator().manual_seed(const.SEED)
     )
+    train.transforms, valid_transforms = train_transforms, valid_transforms
+
     padding_collate_fn_map = collate.default_collate_fn_map.copy()
     padding_collate_fn_map.update({np.ndarray: pad_collate_numpy_array_fn})
     train = DataLoader(

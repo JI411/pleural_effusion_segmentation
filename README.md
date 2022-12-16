@@ -41,6 +41,8 @@ before push.
 
 ## Next
 - [ ] Dataset caching
+- [ ] Move concatenating dataloader, model, transform etc. to pytorch-lightning module, 
+create different child classes for each combination 
 - [ ] Use [NestedTensors](https://pytorch.org/tutorials/prototype/nestedtensor.html) instead of padding
 - [ ] Add more augmentations
 - [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
@@ -48,5 +50,4 @@ before push.
 ### Tests
   - [x] test_dataset
   - [x] test_dice
-  - [ ] test_train
-  - [ ] test_preprocessing
+  - [x] test_wrappers

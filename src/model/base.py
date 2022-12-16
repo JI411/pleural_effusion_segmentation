@@ -1,6 +1,7 @@
 """
 Base class for all models.
 """
+import typing as tp
 
 import segmentation_models_pytorch as smp
 import torch
@@ -8,6 +9,9 @@ import torch
 
 class BaseModel(torch.nn.Module):
     """Base model class used in typing and hinting"""
+
+    train_transforms: tp.Optional[tp.Callable] = None
+    valid_transforms: tp.Optional[tp.Callable] = None
 
     def __init__(self, in_channels: int = 1, **kwargs):
         """ Create model """
