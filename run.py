@@ -14,7 +14,7 @@ from src.model.base import BaseModel
 from src.train import PleuralSegmentationModule
 
 
-def main(args, net: Type[BaseModel] = wrappers.UnetSMP3DWrapper) -> None:
+def main(args, net: Type[BaseModel] = wrappers.Unet3DWrapper) -> None:
     """Run training pipline."""
     seed_everything(const.SEED, workers=True)
 

@@ -38,6 +38,7 @@ before push.
 - [x] Train script
 - [x] Logging
 - [x] Create a dataloader with variable-size input with collate_fn
+- [x] Dataloader for 3D slices with, for UnetSMP3D 
 
 ## Next
 - [ ] Dataset caching
