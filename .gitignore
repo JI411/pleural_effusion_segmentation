@@ -10,6 +10,7 @@
 *.csv
 *.pt
 *.pth
+*.ckpt
 *.pdf
 *.zip
 *.gz
@@ -17,7 +18,12 @@
 *.dcm
 *.html
 *.ipynb
+
+# Logs / data
+
 *.tfevents.*
+**/wandb/**
+data/**/**
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
