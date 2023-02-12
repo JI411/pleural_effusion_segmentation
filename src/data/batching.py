@@ -35,6 +35,7 @@ def pad_collate_numpy_array_fn(batch, *, collate_fn_map=None):
     batch = pad_channels_to_max(batch, value=0)
     return collate.collate([torch.as_tensor(b) for b in batch], collate_fn_map=collate_fn_map)
 
+# pylint: disable=too-many-arguments, self-assigning-variable
 def get_standard_dataloaders(
         batch_size: int,
         num_workers: int = const.DEFAULT_NUM_WORKERS,
