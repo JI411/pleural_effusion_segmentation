@@ -45,7 +45,7 @@ before push.
 - [ ] Move concatenating dataloader, model, transform etc. to pytorch-lightning module, 
 create different child classes for each combination 
 - [ ] Use [NestedTensors](https://pytorch.org/tutorials/prototype/nestedtensor.html) instead of padding
-- [ ] Add more augmentations
+- [ ] Add [more augmentations](https://github.com/ZFTurbo/volumentations)
 - [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
 
 ### Tests
