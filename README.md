@@ -28,25 +28,17 @@ before push.
 ### MVP
 - [x] Project structure  
 - [x] Dataset downloading script
-- [x] Torch dataset for pleural effusion
-- [x] Unet model from smp
 - [x] Dice loss
 - [x] Pylint & actions
-- [x] Unet3D model from [pytorch-3dunet](https://github.com/wolny/pytorch-3dunet)
+- [x] Logging
+- [ ] 2D dataset for pleural effusion
+- [ ] Unet model from smp
 - [ ] Visualisation 
 - [ ] Preprocessing & augmentations  
-- [x] Train script
-- [x] Logging
-- [x] Create a dataloader with variable-size input with collate_fn
-
-## Next
+- [ ] Train script
 - [ ] Dataset caching
-- [ ] Use [NestedTensors](https://pytorch.org/tutorials/prototype/nestedtensor.html) instead of padding
-- [ ] Add more augmentations
 - [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
 
-### Tests
-  - [x] test_dataset
-  - [x] test_dice
-  - [ ] test_train
-  - [ ] test_preprocessing
+## Next
+- [ ] 3D dataset for pleural effusion
+- [ ] Unet3D model
