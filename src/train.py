@@ -2,8 +2,6 @@
 Main training script
 """
 # pylint: disable=unused-argument, arguments-differ
-import typing as tp
-
 import pytorch_lightning as pl
 import torch
 from torch.utils.data import DataLoader
