@@ -1,18 +1,21 @@
 """
 Dataset and Dataloader classes
 """
+import typing as tp
+
 import numpy as np
 
 import const
 from src.data import read_data, preprocessing
 from src.data.base import BaseDataset, Batch
 
+T = tp.TypeVar('T')
 
-def split_channels(array: np.ndarray) -> np.ndarray:
+def split_channels(array: np.ndarray) -> tp.List[np.ndarray]:
     """ Split array to channels (axis=0) """
     return np.split(array, array.shape[0], axis=0)
 
-def flatten(list_of_lists):
+def flatten(list_of_lists: tp.List[tp.List[T]]) -> tp.List[T]:
     """Convert list of lists to list"""
     return [item for sublist in list_of_lists for item in sublist]
 
@@ -20,6 +23,7 @@ class PleuralEffusionDataset2D(BaseDataset):
     """ Pleural Effusion Dataset """
 
     split_channels = True
+
     def __init__(
             self,
             images_dir: const.PathType = const.IMAGES_DIR,
@@ -37,7 +41,7 @@ class PleuralEffusionDataset2D(BaseDataset):
         self.masks = self.get_masks_cache()
         self.save_channels()
 
-    def save_channels(self):
+    def save_channels(self) -> None:
         """ Save only channels with more than 1 target pixel in mask"""
         if not self.split_channels:
             return
@@ -45,7 +49,7 @@ class PleuralEffusionDataset2D(BaseDataset):
         self.images = [img for img, save in zip(self.images, save_channels) if save]
         self.masks = [mask for mask, save in zip(self.masks, save_channels) if save]
 
-    def get_images_cache(self) -> list[np.ndarray]:
+    def get_images_cache(self) -> tp.List[np.ndarray]:
         """ Read images from disk, preprocess they and cache in memory """
         images = [list(read_data.load_dicom_recursive(p))[0] for p in self.image_dir_paths]
         images = [preprocessing.rotate_array(img) for img in images]
@@ -55,7 +59,7 @@ class PleuralEffusionDataset2D(BaseDataset):
             images = flatten(images)
         return images
 
-    def get_masks_cache(self) -> list[np.ndarray]:
+    def get_masks_cache(self) -> tp.List[np.ndarray]:
         """ Read masks from disk and cache in memory """
         masks = [read_data.load_mask_from_dir(p) for p in self.masks_dir_paths]
         if self.split_channels:
