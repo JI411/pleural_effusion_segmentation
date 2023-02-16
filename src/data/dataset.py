@@ -9,12 +9,13 @@ import const
 from src.data import read_data, preprocessing
 from src.data.base import BaseDataset, Batch
 
+T = tp.TypeVar('T')
 
 def split_channels(array: np.ndarray) -> np.ndarray:
     """ Split array to channels (axis=0) """
     return np.split(array, array.shape[0], axis=0)
 
-def flatten(list_of_lists):
+def flatten(list_of_lists: tp.List[tp.List[T]]) -> tp.List[T]:
     """Convert list of lists to list"""
     return [item for sublist in list_of_lists for item in sublist]
 
@@ -39,7 +40,7 @@ class PleuralEffusionDataset2D(BaseDataset):
         self.masks = self.get_masks_cache()
         self.save_channels()
 
-    def save_channels(self):
+    def save_channels(self) -> None:
         """ Save only channels with more than 1 target pixel in mask"""
         if not self.split_channels:
             return
