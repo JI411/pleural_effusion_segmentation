@@ -48,7 +48,7 @@ class PleuralEffusionDataset2D(BaseDataset):
         self.images = [img for img, save in zip(self.images, save_channels) if save]
         self.masks = [mask for mask, save in zip(self.masks, save_channels) if save]
 
-    def get_images_cache(self) -> list[np.ndarray]:
+    def get_images_cache(self) -> tp.List[np.ndarray]:
         """ Read images from disk, preprocess they and cache in memory """
         images = [list(read_data.load_dicom_recursive(p))[0] for p in self.image_dir_paths]
         images = [preprocessing.rotate_array(img) for img in images]
