@@ -1,6 +1,8 @@
 """
 Dataset and Dataloader classes
 """
+import typing as tp
+
 import numpy as np
 
 import const
@@ -55,7 +57,7 @@ class PleuralEffusionDataset2D(BaseDataset):
             images = flatten(images)
         return images
 
-    def get_masks_cache(self) -> list[np.ndarray]:
+    def get_masks_cache(self) -> tp.List[np.ndarray]:
         """ Read masks from disk and cache in memory """
         masks = [read_data.load_mask_from_dir(p) for p in self.masks_dir_paths]
         if self.split_channels:
