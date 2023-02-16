@@ -8,9 +8,18 @@ from src.data import read_data, preprocessing
 from src.data.base import BaseDataset, Batch
 
 
+def split_channels(array: np.ndarray) -> np.ndarray:
+    """ Split array to channels (axis=0) """
+    return np.split(array, array.shape[0], axis=0)
+
+def flatten(list_of_lists):
+    """Convert list of lists to list"""
+    return [item for sublist in list_of_lists for item in sublist]
+
 class PleuralEffusionDataset2D(BaseDataset):
     """ Pleural Effusion Dataset """
 
+    split_channels = True
     def __init__(
             self,
             images_dir: const.PathType = const.IMAGES_DIR,
@@ -26,32 +35,43 @@ class PleuralEffusionDataset2D(BaseDataset):
         super().__init__(images_dir, masks_dir)
         self.images = self.get_images_cache()
         self.masks = self.get_masks_cache()
+        self.save_channels()
 
-    def get_images_cache(self):
+    def save_channels(self):
+        """ Save only channels with more than 1 target pixel in mask"""
+        if not self.split_channels:
+            return
+        save_channels = [np.sum(mask) > 1 for mask in self.masks]
+        self.images = [img for img, save in zip(self.images, save_channels) if save]
+        self.masks = [mask for mask, save in zip(self.masks, save_channels) if save]
+
+    def get_images_cache(self) -> list[np.ndarray]:
         """ Read images from disk, preprocess they and cache in memory """
         images = [list(read_data.load_dicom_recursive(p))[0] for p in self.image_dir_paths]
         images = [preprocessing.rotate_array(img) for img in images]
-        return [preprocessing.normalize(img) for img in images]
+        images = [preprocessing.normalize(img) for img in images]
+        if self.split_channels:
+            images = [split_channels(img) for img in images]
+            images = flatten(images)
+        return images
 
-    def get_masks_cache(self):
+    def get_masks_cache(self) -> list[np.ndarray]:
         """ Read masks from disk and cache in memory """
-        return [read_data.load_mask_from_dir(p) for p in self.masks_dir_paths]
+        masks = [read_data.load_mask_from_dir(p) for p in self.masks_dir_paths]
+        if self.split_channels:
+            masks = [split_channels(mask) for mask in masks]
+            masks = flatten(masks)
+        return masks
+
+    def __len__(self) -> int:
+        """ Len of dataset """
+        return len(self.images)
 
     def __getitem__(self, idx: int) -> Batch:
         """ Get (1 x W x H ) lung image and mask for it """
         image = self.images[idx].astype('float32')
         mask = self.masks[idx].astype(int)
-        # TODO: add channel_idx random sampler, use fraction of 1  # pylint: disable=fixme
-        channel_idx = np.random.randint(image.shape[0])
-        return Batch(image=image[channel_idx][None], mask=mask[channel_idx][None])
-
-class PleuralEffusionDataset3D(BaseDataset):
-    """ Pleural Effusion Dataset """
-
-    def __getitem__(self, idx: int) -> Batch:
-        """ Get (1 x C x W x H ) lung image and mask for it """
-        image = list(read_data.load_dicom_recursive(self.image_dir_paths[idx]))[0]
-        image = preprocessing.rotate_array(image)
-        mask = read_data.load_mask_from_dir(self.masks_dir_paths[idx])
-        image = preprocessing.normalize(image)
-        return Batch(image=image.astype('float32')[None], mask=mask.astype(int)[None])
+        if not self.split_channels:
+            channel_idx = np.random.randint(image.shape[0])
+            image, mask = image[channel_idx][None], mask[channel_idx][None]
+        return Batch(image=image, mask=mask)
