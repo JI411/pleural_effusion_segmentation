@@ -11,7 +11,7 @@ from src.data.base import BaseDataset, Batch
 
 T = tp.TypeVar('T')
 
-def split_channels(array: np.ndarray) -> np.ndarray:
+def split_channels(array: np.ndarray) -> tp.List[np.ndarray]:
     """ Split array to channels (axis=0) """
     return np.split(array, array.shape[0], axis=0)
 
@@ -23,6 +23,7 @@ class PleuralEffusionDataset2D(BaseDataset):
     """ Pleural Effusion Dataset """
 
     split_channels = True
+
     def __init__(
             self,
             images_dir: const.PathType = const.IMAGES_DIR,
