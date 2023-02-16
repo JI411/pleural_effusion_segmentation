@@ -52,10 +52,6 @@ class BaseDataset(Dataset):
         if [p.name for p in self.image_dir_paths] != [p.name for p in self.masks_dir_paths]:
             raise ValueError('Dataset object names does not match!')
 
-    def __len__(self) -> int:
-        """ Len of dataset """
-        return len(self.image_dir_paths)
-
     def __getitem__(self, idx: int) -> Batch:
         """ Get lung image and mask for it """
         raise NotImplementedError
