@@ -38,8 +38,7 @@ class PleuralEffusionDataset2D(BaseDataset):
         :param masks_dir: dir with dirs with .nii.gz masks; default const.MASKS_DIR
         :param augmentation: augmentation function; default None
         """
-        super().__init__(images_dir, masks_dir)
-        self.augmentation = augmentation
+        super().__init__(images_dir, masks_dir, augmentation)
         self.normalization = preprocessing.get_normalization_3d()
         self.images = self.get_images_cache()
         self.masks = self.get_masks_cache()

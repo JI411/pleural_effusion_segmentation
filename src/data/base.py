@@ -33,13 +33,16 @@ class BaseDataset(Dataset):
             self,
             images_dir: const.PathType = const.IMAGES_DIR,
             masks_dir: const.PathType = const.MASKS_DIR,
+            augmentation: tp.Optional[tp.Callable] = None,
     ) -> None:
         """
         Create dataset class.
 
         :param images_dir: dir with dirs with .dcm images; default const.IMAGES_DIR
         :param masks_dir: dir with dirs with .nii.gz masks; default const.MASKS_DIR
+        :param augmentation: augmentation function; default None
         """
+        self.augmentation = augmentation
         self.image_dir_paths: tp.List[Path] = sorted([p for p in Path(images_dir).glob('*') if p.is_dir()])
         self.masks_dir_paths: tp.List[Path] = sorted([p for p in Path(masks_dir).glob('*') if p.is_dir()])
         self._check_paths()

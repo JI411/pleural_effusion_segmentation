@@ -15,7 +15,7 @@ from src.model.wrappers import BaseModel
 class PleuralSegmentationModule(pl.LightningModule):  # pylint: disable=too-many-ancestors
     """Lightning wrapper for models, connect loss, dataloader and model."""
 
-    def __init__(self, model: BaseModel, batch_size) -> None:
+    def __init__(self, model: BaseModel, batch_size: int,) -> None:
         """Create model for training."""
         super().__init__()
 

@@ -3,8 +3,6 @@ Preprocess dataset before training.
 """
 
 import typing as tp
-from functools import partial
-
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, random_split
@@ -12,7 +10,7 @@ from torch.utils.data._utils import collate
 
 import const
 from src.data.base import Loaders, BaseDataset
-from src.data import dataset
+from src.data import dataset, preprocessing
 
 
 def pad_channels_to_max(arrays: tp.List[np.ndarray], value: int) -> tp.List[np.ndarray]:
@@ -60,6 +58,8 @@ def get_standard_dataloaders(
     train, valid = random_split(
         dataset_class(**kwargs), split_lengths, generator=torch.Generator().manual_seed(const.SEED)
     )
+    train.augmentation = preprocessing.train_augmentation()
+    valid.augmentation = preprocessing.valid_augmentation()
     padding_collate_fn_map = collate.default_collate_fn_map.copy()
     padding_collate_fn_map.update({np.ndarray: pad_collate_numpy_array_fn})
     train = DataLoader(
@@ -67,13 +67,11 @@ def get_standard_dataloaders(
         batch_size=batch_size,
         shuffle=True,
         num_workers=num_workers,
-        collate_fn=partial(collate.collate, collate_fn_map=padding_collate_fn_map)
     )
     valid = DataLoader(
         valid,
         batch_size=batch_size,
         shuffle=False,
         num_workers=num_workers,
-        collate_fn=partial(collate.collate, collate_fn_map=padding_collate_fn_map)
     )
     return Loaders(train=train, valid=valid)

@@ -31,12 +31,12 @@ before push.
 - [x] Dice loss
 - [x] Pylint & actions
 - [x] Logging
-- [ ] 2D dataset for pleural effusion
-- [ ] Unet model from smp
+- [x] 2D dataset for pleural effusion
+- [x] Unet model from smp
 - [ ] Visualisation 
-- [ ] Preprocessing & augmentations  
-- [ ] Train script
-- [ ] Dataset caching
+- [x] Preprocessing & augmentations  
+- [x] Train script
+- [x] Dataset caching
 - [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
 
 ## Next
