@@ -6,6 +6,7 @@ import typing
 import albumentations as albu
 import numpy as np
 import volumentations as vol
+from albumentations.pytorch import ToTensorV2
 
 
 def get_normalization_3d() -> typing.Callable[[np.ndarray], np.ndarray]:
@@ -31,10 +32,12 @@ def train_augmentation() -> albu.Compose:
             albu.GridDistortion(num_steps=2, distort_limit=0.2, p=1),
         ], 0.3),
         albu.RandomSizedCrop(min_max_height=(350, 500), height=512, width=512, p=0.2),
+        ToTensorV2(),
     ])
 
 def valid_augmentation() -> albu.Compose:
     """Validation augmentation. Don't use normalization here, because we normalize full 3d image."""
     return albu.Compose([
         albu.Resize(512, 512),
+        ToTensorV2(),
     ])
