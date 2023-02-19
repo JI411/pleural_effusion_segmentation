@@ -1,22 +1,16 @@
 """
-Preprocessing for images
+Preprocessing for images.
 """
+import typing
+
+import albumentations as albu
 import numpy as np
+import volumentations as vol
 
-def normalize(image: np.ndarray, eps: float = 1e-6) -> np.ndarray:
-    """
-    Normalize image to [0, 1] range
 
-    :param image: image
-    :param eps: small number for avoiding division by zero
-    :return: normalized image
-    """
-    image = image.astype(float)
-    min_value = np.min(image)
-    image -= min_value
-    max_value = np.max(image) + eps
-    image /= max_value
-    return image
+def get_normalization_3d() -> typing.Callable[[np.ndarray], np.ndarray]:
+    """Normalization for 3d images. Used for train and validation."""
+    return vol.Normalize(range_norm=False, p=1.).apply
 
 
 def rotate_array(array_3d: np.ndarray) -> np.ndarray:
@@ -27,3 +21,20 @@ def rotate_array(array_3d: np.ndarray) -> np.ndarray:
     :return: rotated array
     """
     return np.rot90(array_3d, axes=(2, 1))
+
+def train_augmentation() -> albu.Compose:
+    """Train augmentation. Don't use normalization here, because we normalize full 3d image."""
+    return albu.Compose([
+        albu.VerticalFlip(p=0.2),
+        albu.OneOf([
+            albu.ElasticTransform(p=1),
+            albu.GridDistortion(num_steps=2, distort_limit=0.2, p=1),
+        ], 0.3),
+        albu.RandomSizedCrop(min_max_height=(350, 500), height=512, width=512, p=0.2),
+    ])
+
+def valid_augmentation() -> albu.Compose:
+    """Validation augmentation. Don't use normalization here, because we normalize full 3d image."""
+    return albu.Compose([
+        albu.Resize(512, 512),
+    ])

@@ -1,5 +1,5 @@
 """
-Read data from disk
+Read data from disk.
 """
 
 import typing as tp
@@ -14,7 +14,8 @@ import const
 
 def load_dicom(directory: const.PathType) -> np.ndarray:
     """
-    Read image from dir with files dicom format, have same dimensions with mask from load_mask
+    Read image from dir with files dicom format, have same dimensions with mask from load_mask.
+
     :param directory: path to directory contains .dcm files
     :return: 3d image
     """
@@ -28,7 +29,8 @@ def load_dicom(directory: const.PathType) -> np.ndarray:
 
 def load_dicom_recursive(directory: const.PathType) -> tp.Generator[np.ndarray, None, None]:
     """
-    Load all dicom images from dir, can be used to read all dataset
+    Load all dicom images from dir, can be used to read all dataset.
+
     :param directory: path to directory contains directories with .dcm files
     :return: 3d images
     """
@@ -42,7 +44,8 @@ def load_dicom_recursive(directory: const.PathType) -> tp.Generator[np.ndarray, 
 
 def load_mask(nii: const.PathType) -> np.ndarray:
     """
-    Read mask in .nii format, have same dimensions with image from load_dicom
+    Read mask in .nii format, have same dimensions with image from load_dicom.
+
     :param nii: path to .nii.gz file
     :return: 3d mask
     """
@@ -52,7 +55,8 @@ def load_mask(nii: const.PathType) -> np.ndarray:
 
 def load_mask_from_dir(nii: const.PathType) -> np.ndarray:
     """
-    Read mask in .nii format, have same dimensions with image from load_dicom
+    Read mask in .nii format, have same dimensions with image from load_dicom.
+
     :param nii: path to .nii.gz file or dir with the only one .nii file
     :return: 3d mask
     """

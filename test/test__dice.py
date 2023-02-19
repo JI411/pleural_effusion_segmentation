@@ -1,5 +1,5 @@
 """
-Test src.dice
+Test src.dice.
 """
 
 import torch
@@ -9,12 +9,12 @@ from src import dice
 
 
 def inverse_sigmoid(logits: torch.Tensor) -> torch.Tensor:
-    """ Inverse function for sigmoid """
+    """Inverse function for sigmoid."""
     return -torch.log((1 / (logits + 1e-8)) - 1)
 
 
 class TestDiceLoss:
-    """ Contains test for dice loss values for different answers """
+    """Contains test for dice loss values for different answers."""
 
     batch_mask = torch.rand(
         2, 1, 10, 36, 36,
@@ -27,12 +27,12 @@ class TestDiceLoss:
     loss = dice.BinaryDiceLoss()
 
     def test__best_predict(self):
-        """ If (pred == mask) loss must be equal to zero """
+        """If (pred == mask) loss must be equal to zero."""
         score = self.loss(raw_logits=inverse_sigmoid(self.batch_mask), mask=self.batch_mask)
         assert torch.isclose(score, torch.tensor(0, dtype=torch.float)), score
 
     def test__worst_predict(self):
-        """ If (pred != mask) in every point loss must be equal to one """
+        """If (pred != mask) in every point loss must be equal to one."""
         inverse_mask = self.batch_mask.clone().bool()
         inverse_mask = (~inverse_mask).float()
         score = self.loss(raw_logits=inverse_sigmoid(inverse_mask), mask=self.batch_mask)

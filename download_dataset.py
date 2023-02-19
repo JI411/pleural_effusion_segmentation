@@ -1,5 +1,5 @@
 """
-Download dataset
+Download dataset.
 """
 
 from pathlib import Path
@@ -12,7 +12,7 @@ import const
 
 def unzip(archives_dir: const.PathType) -> None:
     """
-    Unzip archives fromm dir recursively
+    Unzip archives fromm dir recursively.
 
     :param archives_dir: dir with one or more archives
     :return:
@@ -28,11 +28,7 @@ def unzip(archives_dir: const.PathType) -> None:
 
 
 def load_data(link: str = const.DATASET_LINK) -> None:
-    """
-    Load dataset from W&B
-
-    :return:
-    """
+    """Load dataset from W&B."""
     api = wandb.Api()
     artifact = api.artifact(link)
     artifact.download(root=const.INPUT_DIR)

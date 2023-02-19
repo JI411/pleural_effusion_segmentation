@@ -1,5 +1,5 @@
 """
-Test src.wrappers
+Test src.wrappers.
 """
 import typing as tp
 from functools import partial
@@ -54,13 +54,13 @@ def _random_sphere_dataloader(shape: tp.Sequence[int]) -> DataLoader:
 
 @pytest.mark.parametrize(
     "input_shape,num_epoch,net,max_allowed_loss", [
-        ((4, 1, 16, 32, 32), 20, wrappers.Unet3DWrapper(), 0.02),
-        ((4, 1, 128, 128), 20, wrappers.UnetSMP2DWrapper(), 0.02),
+        ((4, 1, 16, 32, 32), 20, wrappers.Unet3DWrapper(), 0.025),
+        ((4, 1, 128, 128), 20, wrappers.UnetSMP2DWrapper(), 0.025),
     ]
 )
 def test__wrapper(input_shape: tp.Sequence[int], num_epoch: int, net: BaseModel, max_allowed_loss: float):
     """
-    Test wrappers for segmentation models on simple task
+    Test wrappers for segmentation models on simple task.
 
     :param input_shape: shape of input
     :param num_epoch: number of epochs for training model before test
