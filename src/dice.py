@@ -1,5 +1,5 @@
 """
-Compute Dice loss
+Compute Dice loss.
 """
 
 import torch
@@ -14,9 +14,11 @@ class BinaryDiceLoss(_Loss):
 
     def __init__(self, smooth: float = 0.0, eps: float = 1e-7) -> None:
         """
-        Init class
+        Init class.
+
         :param smooth: smoothness constant for dice coefficient
         :param eps: small value to avoid zero division
+        :return:
         """
         super().__init__()
         self.smooth = smooth
@@ -24,7 +26,8 @@ class BinaryDiceLoss(_Loss):
 
     def forward(self, raw_logits: torch.Tensor, mask: torch.Tensor) -> float:
         """
-        Compute Dice loss
+        Compute Dice loss.
+
         :param raw_logits: network output without sigmoid
         :param mask: ground true
         :return: dice loss

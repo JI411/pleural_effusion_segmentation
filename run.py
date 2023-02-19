@@ -1,5 +1,5 @@
 """
-Run main training script
+Run main training script.
 """
 
 from argparse import ArgumentParser

@@ -1,5 +1,5 @@
 """
-Preprocess dataset before training
+Preprocess dataset before training.
 """
 
 import typing as tp
@@ -16,7 +16,7 @@ from src.data import dataset
 
 
 def pad_channels_to_max(arrays: tp.List[np.ndarray], value: int) -> tp.List[np.ndarray]:
-    """ Pad numpy arrays channels to max size """
+    """Pad numpy arrays channels to max size."""
     shapes = np.array([x.shape for x in arrays])
     max_size = shapes.max(axis=0, keepdims=True, initial=-1)  # pylint: disable=unexpected-keyword-arg
     margin = (max_size - shapes)
@@ -26,7 +26,7 @@ def pad_channels_to_max(arrays: tp.List[np.ndarray], value: int) -> tp.List[np.n
     return [np.pad(x, w, mode='constant', constant_values=value) for x, w in zip(arrays, pad)]
 
 def pad_collate_numpy_array_fn(batch, *, collate_fn_map=None):
-    """ Pad numpy arrays channels to max size and call default collate to create tensor """
+    """Pad numpy arrays channels to max size and call default collate to create tensor."""
     elem = batch[0]
     # array of string classes and object
     if collate.np_str_obj_array_pattern.search(elem.dtype.str) is not None:
@@ -43,7 +43,7 @@ def get_standard_dataloaders(
         **kwargs
 ) -> Loaders:
     """
-    Get dataloaders to dataset
+    Get dataloaders to dataset.
 
     :param batch_size: how many samples per batch to load
     :param num_workers: how many subprocesses to use for data loading. 0 => no multiprocessing

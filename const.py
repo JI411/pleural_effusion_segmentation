@@ -1,5 +1,5 @@
 """
-Main constants: paths, params and etc
+Main constants: paths, params and etc.
 """
 import os
 import typing as tp
