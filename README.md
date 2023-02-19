@@ -35,6 +35,7 @@ before push.
 - [x] Unet model from smp
 - [ ] Visualisation 
 - [x] Preprocessing & augmentations  
+- [ ] Augmentations from config
 - [x] Train script
 - [x] Dataset caching
 - [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
