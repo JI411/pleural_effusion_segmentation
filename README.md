@@ -4,7 +4,7 @@ A repository used to train [pleural effusion](https://en.wikipedia.org/wiki/Pleu
 
 ## Installation
 
-If you want to train model, run in terminal code below:
+If you want to train a model, run in terminal code below:
 ```
 git clone https://github.com/JI411/pleural_effusion_segmentation.git
 cd pleural_effusion_segmentation
@@ -19,7 +19,7 @@ You can specify run with pytorch-lightning params, see examples [here](https://p
 
 Install libraries from `requirements-dev.txt`, run pytest and pylint 
 (disabled checks can be found in [pylint.yml](https://github.com/JI411/pleural_effusion_segmentation/blob/main/.github/workflows/pylint.yml))
-before push.
+before push. You can see previous experiments in [wandb](https://wandb.ai/lekomtsev/pleural_effusion_segmentation?workspace=user-lekomtsev).
 
 
 
@@ -40,6 +40,8 @@ before push.
 - [x] Dataset caching
 - [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
 
-## Next 
-- [ ] 3D dataset 
-- [ ] Unet3D model
+## Next
+- [ ] Add 3D dataset 
+- [ ] Add Unet3D models
+- [ ] Wrap to Docker
+- [ ] Accelerate with [voltaML](https://github.com/VoltaML/voltaML)
