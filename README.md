@@ -40,6 +40,6 @@ before push.
 - [x] Dataset caching
 - [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
 
-## Next
-- [ ] 3D dataset for pleural effusion
+## Next 
+- [ ] 3D dataset 
 - [ ] Unet3D model

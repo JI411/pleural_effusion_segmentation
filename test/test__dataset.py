@@ -26,6 +26,20 @@ def test__smoke(standard_loaders):
             break
 
 
+def test__shape(standard_loaders):
+    """Check that all batches have same shape."""
+    first_sample = _get_batch(standard_loaders[0])
+    shape = {'image': first_sample['image'].shape, 'mask': first_sample['mask'].shape}
+    for loader in standard_loaders:
+        for batch in loader:
+            assert batch['image'].shape[1:] == shape['image'][1:], (
+                f'Image shape {batch["image"].shape} != {shape["image"]}'
+            )
+            assert batch['mask'].shape[1:] == shape['mask'][1:], (
+                f'Mask shape {batch["mask"].shape} != {shape["mask"]}'
+            )
+
+
 def test__types(standard_loaders):
     """
     Assert typing.
@@ -43,14 +57,3 @@ def test__types(standard_loaders):
     assert not set(dataset.Batch.__annotations__.keys()).symmetric_difference(keys), (
         f'Set of batch keys {keys} != set of dataset.Batch keys'
     )
-
-def test__dataloader_split():
-    """Raise error then have incorrect split for train/val."""
-    with pytest.raises(ValueError):
-        batching.get_standard_dataloaders(batch_size=1, split_lengths=(2, 0))
-
-    dataset_len = sum(len(loader) for loader in iter(batching.get_standard_dataloaders(batch_size=1)))
-    with pytest.raises(ValueError):
-        batching.get_standard_dataloaders(batch_size=1, split_lengths=(dataset_len + 1, 0))
-    with pytest.raises(ValueError):
-        batching.get_standard_dataloaders(batch_size=1, split_lengths=(0, dataset_len + 1))

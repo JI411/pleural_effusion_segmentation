@@ -27,10 +27,10 @@ def train_augmentation() -> albu.Compose:
     return albu.Compose([
         albu.VerticalFlip(p=0.2),
         albu.OneOf([
-            albu.ElasticTransform(alpha=120, sigma=120 * 0.05, alpha_affine=120 * 0.03, p=1),
-            albu.GridDistortion(p=1),
+            albu.ElasticTransform(p=1),
+            albu.GridDistortion(num_steps=2, distort_limit=0.2, p=1),
         ], 0.3),
-        albu.RandomSizedCrop(min_max_height=(400, 512), height=512, width=512, p=0.2),
+        albu.RandomSizedCrop(min_max_height=(350, 500), height=512, width=512, p=0.2),
     ])
 
 def valid_augmentation() -> albu.Compose:

@@ -5,6 +5,7 @@ Batching and data loading.
 import typing as tp
 from pathlib import Path
 
+import albumentations as albu
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
@@ -31,9 +32,9 @@ class BaseDataset(Dataset):
 
     def __init__(
             self,
-            images_dir: const.PathType = const.IMAGES_DIR,
-            masks_dir: const.PathType = const.MASKS_DIR,
-            augmentation: tp.Optional[tp.Callable] = None,
+            images_dir: const.PathType,
+            masks_dir: const.PathType,
+            augmentation: albu.Compose = None,
     ) -> None:
         """
         Create dataset class.

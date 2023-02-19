@@ -3,6 +3,7 @@ Dataset and Dataloader classes.
 """
 import typing as tp
 
+import albumentations as albu
 import numpy as np
 
 import const
@@ -22,13 +23,11 @@ def flatten(list_of_lists: tp.List[tp.List[T]]) -> tp.List[T]:
 class PleuralEffusionDataset2D(BaseDataset):
     """Pleural Effusion Dataset for 2D training."""
 
-    split_channels = True
-
     def __init__(
             self,
-            images_dir: const.PathType = const.IMAGES_DIR,
-            masks_dir: const.PathType = const.MASKS_DIR,
-            augmentation: tp.Optional[tp.Callable] = None,
+            images_dir: const.PathType,
+            masks_dir: const.PathType,
+            augmentation: albu.Compose = None,
     ) -> None:
         """
         Create dataset class.
@@ -48,18 +47,16 @@ class PleuralEffusionDataset2D(BaseDataset):
         images = [list(read_data.load_dicom_recursive(p))[0] for p in self.image_dir_paths]
         images = [preprocessing.rotate_array(img) for img in images]
         images = [self.normalization(img) for img in images]
-        if self.split_channels:
-            images = [split_channels(img) for img in images]
-            images = flatten(images)
-        return images
+        images = [split_channels(img) for img in images]
+        images = flatten(images)
+        return [np.moveaxis(image, 0, -1) for image in images]
 
     def get_masks_cache(self) -> tp.List[np.ndarray]:
         """Read masks from disk and cache in memory."""
         masks = [read_data.load_mask_from_dir(p) for p in self.masks_dir_paths]
-        if self.split_channels:
-            masks = [split_channels(mask) for mask in masks]
-            masks = flatten(masks)
-        return masks
+        masks = [split_channels(mask) for mask in masks]
+        masks = flatten(masks)
+        return [np.moveaxis(mask, 0, -1) for mask in masks]
 
     def __len__(self) -> int:
         """Len of dataset."""
@@ -69,9 +66,6 @@ class PleuralEffusionDataset2D(BaseDataset):
         """Get (1 x W x H ) lung image and mask for it."""
         image = self.images[idx].astype('float32')
         mask = self.masks[idx].astype(int)
-        if not self.split_channels:
-            channel_idx = np.random.randint(image.shape[0])
-            image, mask = image[channel_idx][None], mask[channel_idx][None]
 
         if self.augmentation:
             augmented = self.augmentation(image=image, mask=mask)
