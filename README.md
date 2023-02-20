@@ -40,6 +40,7 @@ before push.
 - [x] Visualisation with [Supervisely](https://supervise.ly/) 
 - [x] Preprocessing & augmentations  
 - [ ] Augmentations from config
+- [ ] Use Supervisely dataset format
 - [x] Train script
 - [x] Dataset caching
 - [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
