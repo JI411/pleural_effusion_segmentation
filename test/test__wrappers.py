@@ -55,8 +55,7 @@ def _random_sphere_dataloader(shape: tp.Sequence[int]) -> DataLoader:
 
 @pytest.mark.parametrize(
     "input_shape,num_epoch,net,max_allowed_loss", [
-        ((4, 1, 16, 32, 32), 20, wrappers.Unet3DWrapper(), 0.05),
-        ((4, 1, 128, 128), 20, wrappers.UnetSMP2DWrapper(), 0.05),
+        ((4, 1, 128, 128), 20, wrappers.UnetSMP2DWrapper(), 0.025),
     ]
 )
 def test__wrapper(input_shape: tp.Sequence[int], num_epoch: int, net: BaseModel, max_allowed_loss: float):

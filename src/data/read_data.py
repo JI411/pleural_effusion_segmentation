@@ -7,6 +7,7 @@ from pathlib import Path
 
 import SimpleITK as sitk
 import nibabel as nib
+import nrrd
 import numpy as np
 
 import const
@@ -42,16 +43,19 @@ def load_dicom_recursive(directory: const.PathType) -> tp.Generator[np.ndarray, 
         yield from load_dicom_recursive(dicom_dir)
 
 
-def load_mask(nii: const.PathType) -> np.ndarray:
+def load_mask(nii: const.PathType, transpose: bool = True) -> np.ndarray:
     """
     Read mask in .nii format, have same dimensions with image from load_dicom.
 
     :param nii: path to .nii.gz file
+    :param transpose: transpose mask to zyx
     :return: 3d mask
     """
     mask = nib.load(str(nii))
     mask = mask.get_fdata()
-    return mask.transpose(2, 0, 1)
+    if transpose:
+        mask = mask.transpose(2, 0, 1)
+    return mask
 
 def load_mask_from_dir(nii: const.PathType) -> np.ndarray:
     """
@@ -67,3 +71,20 @@ def load_mask_from_dir(nii: const.PathType) -> np.ndarray:
             raise FileNotFoundError(f'Wrong path to mask file: {nii}')
         nii = nii_files[0]
     return load_mask(nii=nii)
+
+
+def to_nrrd_mask(nii: const.PathType) -> None:
+    """
+    Convert mask in .nii format to .nrrd format.
+
+    :param nii: path to .nii.gz file or dir with the only one .nii file
+    :return: 3d mask
+    """
+    nii = Path(nii)
+    if nii.is_dir():
+        nii_files = list(nii.rglob('*.nii.gz'))
+        if len(nii_files) != 1:
+            raise FileNotFoundError(f'Wrong path to mask file: {nii}')
+        nii = nii_files[0]
+    mask = load_mask(nii=nii, transpose=False)
+    nrrd.write(str(nii.with_suffix('.nrrd')), mask)
