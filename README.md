@@ -1,6 +1,10 @@
 # pleural_effusion_segmentation
 
 A repository used to train [pleural effusion](https://en.wikipedia.org/wiki/Pleural_effusion) segmentation model. 
+Example of object you can see in [Supervisely](https://supervise.ly/) project 
+[here](https://app.supervise.ly/share-links/CLaWf6xh1Fkwrqqj1WOw1b5pzr2q4gYnIiVnEl7mIooZzGq9PNesu01o431Sp16b).
+
+![example.jpg](media/example.jpg)
 
 ## Installation
 
@@ -33,7 +37,7 @@ before push.
 - [x] Logging
 - [x] 2D dataset for pleural effusion
 - [x] Unet model from smp
-- [ ] Visualisation 
+- [x] Visualisation with [Supervisely](https://supervise.ly/) 
 - [x] Preprocessing & augmentations  
 - [ ] Augmentations from config
 - [x] Train script
