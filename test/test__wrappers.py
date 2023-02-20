@@ -7,6 +7,7 @@ from functools import partial
 import numpy as np
 import pytest
 import torch
+from pytorch_lightning import seed_everything
 from torch.utils.data import DataLoader, TensorDataset
 
 import const
@@ -67,6 +68,7 @@ def test__wrapper(input_shape: tp.Sequence[int], num_epoch: int, net: BaseModel,
     :param max_allowed_loss:  max allowed loss on simple train dataset after training
     :return:
     """
+    seed_everything(const.SEED, workers=True)
     net.train()
     criterion = torch.nn.BCEWithLogitsLoss()
     optimizer = torch.optim.AdamW(net.parameters(), lr=0.001)
