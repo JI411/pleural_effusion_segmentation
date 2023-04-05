@@ -15,7 +15,10 @@ INPUT_DIR: tp.Final[Path] = DATA_DIR / 'input'
 OUTPUT_DIR: tp.Final[Path] = DATA_DIR / 'output'
 LOG_DIR: tp.Final[Path] = OUTPUT_DIR / 'logs'
 
-DATASET_LINK: tp.Final[str] = 'lekomtsev/pleural_effusion_segmentation/subset_split.zip:latest'
+DATASET_LINKS: tp.Final[tp.Tuple[str, ...]] = (
+    'lekomtsev/pleural_effusion_segmentation/train-relabeled.tar:latest',
+    'lekomtsev/pleural_effusion_segmentation/valid-relabeled.tar:latest'
+)
 
 SEED: tp.Final[int] = int(os.environ.get('SEED', 411))
 DEFAULT_NUM_WORKERS: tp.Final[int] = int(os.environ.get('DEFAULT_NUM_WORKERS', 1))

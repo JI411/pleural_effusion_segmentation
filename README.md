@@ -38,15 +38,15 @@ before push. You can see previous experiments in [wandb](https://wandb.ai/lekomt
 - [x] 2D dataset for pleural effusion
 - [x] Unet model from smp
 - [x] Visualisation with [Supervisely](https://supervise.ly/) 
-- [x] Preprocessing & augmentations  
-- [ ] Augmentations from config
+- [x] Preprocessing & augmentations
 - [ ] Use Supervisely dataset format
 - [x] Train script
 - [x] Dataset caching
-- [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
 
 ## Next
-- [ ] Add 3D dataset 
-- [ ] Add Unet3D models
+- [ ] Add 3D dataset
+- [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
 - [ ] Wrap to Docker
+- [ ] Augmentations from config
+- [ ] Run from config
 - [ ] Accelerate with [voltaML](https://github.com/VoltaML/voltaML)
