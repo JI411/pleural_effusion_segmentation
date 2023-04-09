@@ -1,9 +1,6 @@
 # pleural_effusion_segmentation
 
-A repository used to train [pleural effusion](https://en.wikipedia.org/wiki/Pleural_effusion) segmentation model. 
-Example of object you can see in [Supervisely](https://supervise.ly/) project 
-[here](https://app.supervise.ly/share-links/CLaWf6xh1Fkwrqqj1WOw1b5pzr2q4gYnIiVnEl7mIooZzGq9PNesu01o431Sp16b). 
-Or sliced images in [colab](https://colab.research.google.com/drive/1z8OTP7m3l1p8lYFqQNl81qWg8k4o0yHb?usp=sharing).
+A repository used to train [pleural effusion](https://en.wikipedia.org/wiki/Pleural_effusion) segmentation model.
 
 ![example.jpg](media/example.jpg)
 
@@ -15,17 +12,23 @@ git clone https://github.com/JI411/pleural_effusion_segmentation.git
 cd pleural_effusion_segmentation
 pip install -r requirements.txt
 python download_dataset.py
-python run.py --accelerator="gpu" --max_epochs=100
+python run.py --accelerator="gpu" --batch=10 --max_epochs=2000 --log_every_n_steps=20
 ```
 
 You can specify run with pytorch-lightning params, see examples [here](https://pytorch-lightning.readthedocs.io/en/stable/common/trainer.html#trainer-in-python-scripts)
+
+## Examples
+1. [Example](https://app.supervise.ly/share-links/CLaWf6xh1Fkwrqqj1WOw1b5pzr2q4gYnIiVnEl7mIooZzGq9PNesu01o431Sp16b) of object in Supervisely project
+2. [Augmentations](https://colab.research.google.com/drive/1z8OTP7m3l1p8lYFqQNl81qWg8k4o0yHb?usp=sharing) visualisation
+3. [Experiments](https://wandb.ai/lekomtsev/pleural_effusion_segmentation)
+4. [Run training in colab](https://colab.research.google.com/drive/1vPlel5uoezxDbhfv8CaPPtB7iRFEF_Jf?usp=sharing)
+
 
 ## Contributing
 
 Install libraries from `requirements-dev.txt`, run pytest and pylint 
 (disabled checks can be found in [pylint.yml](https://github.com/JI411/pleural_effusion_segmentation/blob/main/.github/workflows/pylint.yml))
 before push. You can see previous experiments in [wandb](https://wandb.ai/lekomtsev/pleural_effusion_segmentation?workspace=user-lekomtsev).
-
 
 
 ## TODO
