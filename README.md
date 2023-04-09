@@ -2,7 +2,8 @@
 
 A repository used to train [pleural effusion](https://en.wikipedia.org/wiki/Pleural_effusion) segmentation model. 
 Example of object you can see in [Supervisely](https://supervise.ly/) project 
-[here](https://app.supervise.ly/share-links/CLaWf6xh1Fkwrqqj1WOw1b5pzr2q4gYnIiVnEl7mIooZzGq9PNesu01o431Sp16b).
+[here](https://app.supervise.ly/share-links/CLaWf6xh1Fkwrqqj1WOw1b5pzr2q4gYnIiVnEl7mIooZzGq9PNesu01o431Sp16b). 
+Or sliced images in [colab](https://colab.research.google.com/drive/1z8OTP7m3l1p8lYFqQNl81qWg8k4o0yHb?usp=sharing).
 
 ![example.jpg](media/example.jpg)
 
