@@ -13,7 +13,7 @@ def train_augmentation() -> vol.Compose:
     return vol.Compose([
         # vol.RandomCropFromBorders(crop_value=0.1, p=0.1),
         # vol.ElasticTransform((0, 0.2), interpolation=2, p=0.1),
-        # vol.Rotate((-15, 15), (-10, 10), (-10, 10), p=0.1),
+        # vol.Rotate((-10, 10), (-5, 5), (-5, 5), p=0.1),
         vol.Resize(
             PATCH_SIZE,
             interpolation=1,
@@ -22,7 +22,6 @@ def train_augmentation() -> vol.Compose:
             p=1.
         ),
         vol.GaussianNoise(var_limit=(0, 10), p=0.3),
-        vol.RandomGamma(gamma_limit=(80, 120), p=0.1),
         # vol.RandomDropPlane(axes=(0, 1, 2), p=0.1),
         # vol.OneOrOther([]),
         # vol.Flip(0, p=0.1),
