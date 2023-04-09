@@ -8,7 +8,6 @@ from const import PATCH_SIZE
 
 def train_augmentation() -> vol.Compose:
     """Train augmentations."""
-
     return vol.Compose([
         vol.Rotate((-5, 5), (-2, 2), (-2, 2), p=0.3),
         vol.RandomCropFromBorders(crop_value=0.05, p=0.3),
