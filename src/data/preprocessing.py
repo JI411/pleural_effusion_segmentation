@@ -21,7 +21,7 @@ def train_augmentation() -> vol.Compose:
             p=1.
         ),
         vol.GaussianNoise(var_limit=(0, 10), p=0.3),
-        vol.Flip(0, p=0.2),
+        # vol.Flip(0, p=0.2),
         vol.Flip(1, p=0.2),
         # vol.OneOrOther([]),
         # vol.Flip(2, p=0.1),
