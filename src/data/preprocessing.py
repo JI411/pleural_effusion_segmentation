@@ -20,7 +20,7 @@ def train_augmentation() -> vol.Compose:
         ),
         vol.Flip(0, p=0.01),
         vol.GaussianNoise(var_limit=(10, 40), p=0.4),
-        vol.Normalize(range_norm=False, p=1.),  # todo: range_norm=True
+        vol.Normalize(range_norm=False, p=1.),
     ], p=1.)
 
 def valid_augmentation() -> vol.Compose:
