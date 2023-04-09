@@ -9,7 +9,7 @@ from const import PATCH_SIZE
 def train_augmentation() -> vol.Compose:
     """Train augmentations."""
     return vol.Compose([
-        vol.Rotate((-5, 5), (-5, 5), (-5, 5), p=0.3),
+        vol.Rotate((-5, 5), (-2, 2), (-2, 2), p=0.3),
         vol.RandomCropFromBorders(crop_value=0.05, p=0.05),
         vol.Resize(
             PATCH_SIZE,
@@ -19,7 +19,7 @@ def train_augmentation() -> vol.Compose:
             p=1.
         ),
         vol.Flip(0, p=0.01),
-        vol.GaussianNoise(var_limit=(10, 30), p=0.4),
+        vol.GaussianNoise(var_limit=(10, 40), p=0.4),
         vol.Normalize(range_norm=False, p=1.),  # todo: range_norm=True
     ], p=1.)
 
