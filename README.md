@@ -2,7 +2,8 @@
 
 A repository used to train [pleural effusion](https://en.wikipedia.org/wiki/Pleural_effusion) segmentation model. 
 Example of object you can see in [Supervisely](https://supervise.ly/) project 
-[here](https://app.supervise.ly/share-links/CLaWf6xh1Fkwrqqj1WOw1b5pzr2q4gYnIiVnEl7mIooZzGq9PNesu01o431Sp16b).
+[here](https://app.supervise.ly/share-links/CLaWf6xh1Fkwrqqj1WOw1b5pzr2q4gYnIiVnEl7mIooZzGq9PNesu01o431Sp16b). 
+Or sliced images in [colab](https://colab.research.google.com/drive/1z8OTP7m3l1p8lYFqQNl81qWg8k4o0yHb?usp=sharing).
 
 ![example.jpg](media/example.jpg)
 
@@ -38,15 +39,16 @@ before push. You can see previous experiments in [wandb](https://wandb.ai/lekomt
 - [x] 2D dataset for pleural effusion
 - [x] Unet model from smp
 - [x] Visualisation with [Supervisely](https://supervise.ly/) 
-- [x] Preprocessing & augmentations  
-- [ ] Augmentations from config
-- [ ] Use Supervisely dataset format
+- [x] Preprocessing & augmentations
+- [x] Use Supervisely dataset format
 - [x] Train script
 - [x] Dataset caching
-- [ ] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
+- [x] Add 3D dataset
+- [x] Add models from [MedicalZooPytorch](https://github.com/black0017/MedicalZooPytorch)
 
 ## Next
-- [ ] Add 3D dataset 
-- [ ] Add Unet3D models
+- [ ] More augmentations
+- [ ] Add losses and metrics
+- [ ] Run from config
 - [ ] Wrap to Docker
 - [ ] Accelerate with [voltaML](https://github.com/VoltaML/voltaML)

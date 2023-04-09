@@ -1,10 +1,13 @@
 """
 Compute Dice loss.
 """
+import typing as tp
 
 import torch
 from torch.nn.functional import logsigmoid
 from torch.nn.modules.loss import _Loss
+
+LossReturnType = tp.Union[float, torch.Tensor]
 
 class BinaryDiceLoss(_Loss):
     """
@@ -24,7 +27,7 @@ class BinaryDiceLoss(_Loss):
         self.smooth = smooth
         self.eps = eps
 
-    def forward(self, raw_logits: torch.Tensor, mask: torch.Tensor) -> float:
+    def forward(self, raw_logits: torch.Tensor, mask: torch.Tensor) -> LossReturnType:
         """
         Compute Dice loss.
 
