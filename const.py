@@ -22,14 +22,15 @@ DATASET_LINKS: tp.Final[tp.Tuple[str, ...]] = (
 
 SEED: tp.Final[int] = int(os.environ.get('SEED', 411))
 DEFAULT_NUM_WORKERS: tp.Final[int] = int(os.environ.get('DEFAULT_NUM_WORKERS', 1))
-DEFAULT_VALID_FRACTION: tp.Final[float] = float(os.environ.get('DEFAULT_VALID_FRACTION', 0.2))
+PATCH_SIZE: tp.Final[tp.Tuple[int, int, int]] = (128, 128, 64)
 
 PathType = tp.Union[Path, str]
 
 @dataclass(frozen=True)
 class DatasetPathConfig:
     """Paths to train/valid dataset."""
-    train_images: Path = INPUT_DIR / 'subset_split' / 'subset_train' / 'subset_img' / 'subset_img' / 'subset'
-    train_masks: Path = INPUT_DIR / 'subset_split' / 'subset_train' / 'subset_masks' / 'subset_masks'
-    valid_images: Path = INPUT_DIR / 'subset_split' / 'subset_test' / 'subset_img' / 'subset_img' / 'subset'
-    valid_masks: Path = INPUT_DIR / 'subset_split' / 'subset_test' / 'subset_masks' / 'subset_masks'
+    train_dir: Path = INPUT_DIR / 'train-relabeled' / 'train'
+    valid_dir: Path = INPUT_DIR / 'valid-relabeled' / 'valid'
+    images_dir_name: str = 'volume'
+    masks_dir_name: str = 'mask'
+    mask_file_name: str = 'semantic_segmentation.nrrd'

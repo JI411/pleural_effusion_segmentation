@@ -5,7 +5,7 @@ Test src.dice.
 import torch
 
 import const
-from src import dice
+from src.loss import dice
 
 
 def inverse_sigmoid(logits: torch.Tensor) -> torch.Tensor:
