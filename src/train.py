@@ -68,5 +68,5 @@ class PleuralSegmentationModule(pl.LightningModule):  # pylint: disable=too-many
     def configure_optimizers(self):
         """Configure optimizer."""
         optimizer = torch.optim.AdamW(self.parameters(), lr=1e-3)
-        scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=800, gamma=0.1)
+        scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=300, gamma=0.5)
         return [optimizer], [{"scheduler": scheduler, "interval": "epoch"}]
