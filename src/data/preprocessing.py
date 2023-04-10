@@ -16,7 +16,6 @@ def train_augmentation() -> vol.Compose:
             PATCH_SIZE,
             interpolation=1,
             resize_type=0,
-            always_apply=True,
             p=1.,
         ),
         vol.Flip(0, p=0.01),
