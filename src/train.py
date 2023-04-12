@@ -43,7 +43,7 @@ class PleuralSegmentationModule(pl.LightningModule):  # pylint: disable=too-many
         """Get train dataloader."""
         dataset = PleuralEffusionDataset3D(
             data_dir=const.DatasetPathConfig.train_dir,
-            augmentation=preprocessing.train_augmentation(),
+            augmentation=preprocessing.get_train_augmentation(),
         )
         return DataLoader(
             dataset,
@@ -56,7 +56,7 @@ class PleuralSegmentationModule(pl.LightningModule):  # pylint: disable=too-many
         """Get validation dataloader."""
         dataset = PleuralEffusionDataset3D(
             data_dir=const.DatasetPathConfig.valid_dir,
-            augmentation=preprocessing.valid_augmentation(),
+            augmentation=preprocessing.get_valid_augmentation(),
         )
         return DataLoader(
             dataset,
@@ -68,5 +68,5 @@ class PleuralSegmentationModule(pl.LightningModule):  # pylint: disable=too-many
     def configure_optimizers(self):
         """Configure optimizer."""
         optimizer = torch.optim.AdamW(self.parameters(), lr=1e-3)
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=600, T_mult=1, eta_min=1e-6)
+        scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=300, gamma=0.5)
         return [optimizer], [{"scheduler": scheduler, "interval": "epoch"}]

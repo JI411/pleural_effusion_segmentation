@@ -27,7 +27,7 @@ def main(args) -> None:
         batch_size = trainer.tune(model)['scale_batch_size']
 
     model = PleuralSegmentationModule(model=net(), batch_size=batch_size)
-    lr_monitor = LearningRateMonitor(logging_interval='epoch')
+    lr_monitor = LearningRateMonitor(logging_interval='step')
     wandb_logger = WandbLogger(project="pleural_effusion_segmentation", save_dir=const.LOG_DIR, name=args.name)
     wandb_logger.watch(model)
     trainer = Trainer.from_argparse_args(
