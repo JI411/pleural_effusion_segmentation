@@ -6,7 +6,7 @@ import volumentations as vol
 from const import PATCH_SIZE
 
 
-def train_augmentation() -> vol.Compose:
+def get_train_augmentation() -> vol.Compose:
     """Train augmentations."""
     return vol.Compose([
         vol.Normalize(range_norm=False, p=1.),
@@ -19,12 +19,13 @@ def train_augmentation() -> vol.Compose:
             PATCH_SIZE,
             interpolation=1,
             resize_type=0,
+            always_apply=True,
             p=1.,
         ),
         vol.Normalize(range_norm=False, p=1.),
     ], p=1.)
 
-def valid_augmentation() -> vol.Compose:
+def get_valid_augmentation() -> vol.Compose:
     """Validation augmentations."""
     return vol.Compose([
         vol.Normalize(range_norm=False, p=1.),

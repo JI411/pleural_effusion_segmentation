@@ -43,7 +43,7 @@ class PleuralSegmentationModule(pl.LightningModule):  # pylint: disable=too-many
         """Get train dataloader."""
         dataset = PleuralEffusionDataset3D(
             data_dir=const.DatasetPathConfig.train_dir,
-            augmentation=preprocessing.train_augmentation(),
+            augmentation=preprocessing.get_train_augmentation(),
         )
         return DataLoader(
             dataset,
@@ -56,7 +56,7 @@ class PleuralSegmentationModule(pl.LightningModule):  # pylint: disable=too-many
         """Get validation dataloader."""
         dataset = PleuralEffusionDataset3D(
             data_dir=const.DatasetPathConfig.valid_dir,
-            augmentation=preprocessing.valid_augmentation(),
+            augmentation=preprocessing.get_valid_augmentation(),
         )
         return DataLoader(
             dataset,

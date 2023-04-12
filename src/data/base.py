@@ -4,7 +4,7 @@ Batching and data loading.
 
 import typing as tp
 
-import albumentations as albu
+import volumentations as vol
 import nrrd
 import numpy as np
 import torch
@@ -48,7 +48,7 @@ class BaseDataset(Dataset):
     def __init__(
             self,
             data_dir: const.PathType,
-            augmentation: albu.Compose = None,
+            augmentation: vol.Compose = None,
     ) -> None:
         """
         Create dataset class.
