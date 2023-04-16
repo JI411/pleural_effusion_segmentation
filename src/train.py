@@ -68,5 +68,5 @@ class PleuralSegmentationModule(pl.LightningModule):  # pylint: disable=too-many
     def configure_optimizers(self):
         """Configure optimizer."""
         optimizer = torch.optim.AdamW(self.parameters(), lr=1e-3)
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=600, T_mult=1, eta_min=1e-6)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=400, T_mult=1, eta_min=1e-6)
         return [optimizer], [{"scheduler": scheduler, "interval": "epoch"}]
