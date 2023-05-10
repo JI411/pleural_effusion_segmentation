@@ -51,7 +51,9 @@ before push. You can see previous experiments in [wandb](https://wandb.ai/lekomt
 
 ## Next
 - [ ] More augmentations
-- [ ] FP16 training
+- [x] FP16 training
+- [x] ONNX export
+- [ ] ONNX export tests 
 - [ ] Add losses and metrics
 - [ ] Add [SwinUNETR](https://github.com/Project-MONAI/research-contributions/tree/main/SwinUNETR) or another 3D model from [MONAI](https://github.com/Project-MONAI)
 - [ ] Run from config
