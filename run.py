@@ -2,7 +2,7 @@
 Run main training script.
 """
 
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 
 from pytorch_lightning import Trainer, seed_everything
 from pytorch_lightning.callbacks import LearningRateMonitor
@@ -12,6 +12,22 @@ import const
 from src.model.base import BaseModelWrapper
 from src.model.wrappers import ModelsZoo
 from src.train import PleuralSegmentationModule
+
+def parse_args() -> Namespace:
+    """Get arguments for training script. Add params to set of params from lightning Trainer."""
+    parser = ArgumentParser()
+    parser.add_argument(
+        '--batch', type=int, action='store', default=None, help='Batch size. Default: find batch size with Trainer.'
+    )
+    parser.add_argument(
+        '--name', type=str, action='store', default=None, help='Name to wandb run. Default: random name.'
+    )
+    parser.add_argument(
+        '--model', type=str, action='store', default='unet3d',
+        help='Name of model from src/model/wrappers/ModelZoo. Default: unet3d.'
+    )
+    parser = Trainer.add_argparse_args(parser)
+    return parser.parse_args()
 
 
 def main(args) -> None:
@@ -37,18 +53,5 @@ def main(args) -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser()
-    parser.add_argument(
-        '--batch', type=int, action='store', default=None, help='Batch size. Default: find batch size with Trainer.'
-    )
-    parser.add_argument(
-        '--name', type=str, action='store', default=None, help='Name to wandb run. Default: random name.'
-    )
-    parser.add_argument(
-        '--model', type=str, action='store', default='unet3d',
-        help='Name of model from src/model/wrappers/ModelZoo. Default: unet3d.'
-    )
-    parser = Trainer.add_argparse_args(parser)
-    arguments = parser.parse_args()
-
+    arguments = parse_args()
     main(arguments)
