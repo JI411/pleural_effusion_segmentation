@@ -41,7 +41,7 @@ before push. You can see previous experiments in [wandb](https://wandb.ai/lekomt
 - [x] Logging
 - [x] 2D dataset for pleural effusion
 - [x] Unet model from smp
-- [x] Visualisation with [Supervisely](https://supervise.ly/) 
+- [x] Visualisation with [Supervisely](https://supervise.ly/) (from DICOM to nrrd format)
 - [x] Preprocessing & augmentations
 - [x] Use Supervisely dataset format
 - [x] Train script
